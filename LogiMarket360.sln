@@ -1,0 +1,57 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{6C595123-1CBD-48D0-82E6-EDE4AB24A347}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogiMarket.Application", "src\LogiMarket.Application\LogiMarket.Application.csproj", "{EB9040D0-4E24-4E77-8A9E-3204C0C08639}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogiMarket.Domain", "src\LogiMarket.Domain\LogiMarket.Domain.csproj", "{E2AD88A4-F529-4382-9945-40B6F6D88F25}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogiMarket.Infrastructure", "src\LogiMarket.Infrastructure\LogiMarket.Infrastructure.csproj", "{A87BFC22-187F-4B95-A788-567AF48C90A2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogiMarket.WinForms", "src\LogiMarket.WinForms\LogiMarket.WinForms.csproj", "{6D63F90B-4D90-4F8A-B67F-82ACF18338DE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{69C2DE30-9154-456B-8C57-756BD4776BD8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogiMarket.Tests", "tests\LogiMarket.Tests\LogiMarket.Tests.csproj", "{2D85EC8F-C67B-4E3B-ACE4-BBF74EE1853C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EB9040D0-4E24-4E77-8A9E-3204C0C08639}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB9040D0-4E24-4E77-8A9E-3204C0C08639}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB9040D0-4E24-4E77-8A9E-3204C0C08639}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB9040D0-4E24-4E77-8A9E-3204C0C08639}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2AD88A4-F529-4382-9945-40B6F6D88F25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2AD88A4-F529-4382-9945-40B6F6D88F25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2AD88A4-F529-4382-9945-40B6F6D88F25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2AD88A4-F529-4382-9945-40B6F6D88F25}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A87BFC22-187F-4B95-A788-567AF48C90A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A87BFC22-187F-4B95-A788-567AF48C90A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A87BFC22-187F-4B95-A788-567AF48C90A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A87BFC22-187F-4B95-A788-567AF48C90A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D63F90B-4D90-4F8A-B67F-82ACF18338DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D63F90B-4D90-4F8A-B67F-82ACF18338DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D63F90B-4D90-4F8A-B67F-82ACF18338DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D63F90B-4D90-4F8A-B67F-82ACF18338DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D85EC8F-C67B-4E3B-ACE4-BBF74EE1853C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D85EC8F-C67B-4E3B-ACE4-BBF74EE1853C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D85EC8F-C67B-4E3B-ACE4-BBF74EE1853C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D85EC8F-C67B-4E3B-ACE4-BBF74EE1853C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{EB9040D0-4E24-4E77-8A9E-3204C0C08639} = {6C595123-1CBD-48D0-82E6-EDE4AB24A347}
+		{E2AD88A4-F529-4382-9945-40B6F6D88F25} = {6C595123-1CBD-48D0-82E6-EDE4AB24A347}
+		{A87BFC22-187F-4B95-A788-567AF48C90A2} = {6C595123-1CBD-48D0-82E6-EDE4AB24A347}
+		{6D63F90B-4D90-4F8A-B67F-82ACF18338DE} = {6C595123-1CBD-48D0-82E6-EDE4AB24A347}
+		{2D85EC8F-C67B-4E3B-ACE4-BBF74EE1853C} = {69C2DE30-9154-456B-8C57-756BD4776BD8}
+	EndGlobalSection
+EndGlobal
