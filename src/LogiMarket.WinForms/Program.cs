@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using LogiMarket.Infrastructure;
+using LogiMarket.Infrastructure.Persistencia;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace LogiMarket.WinForms;
 
@@ -13,6 +15,9 @@ static class Program
         ApplicationConfiguration.Initialize();
 
         using var provider = ComposeServices();
+        using (var scope = provider.CreateScope())
+            scope.ServiceProvider.GetRequiredService<InicializadorBaseDatos>().InicializarAsync().GetAwaiter().GetResult();
+
         System.Windows.Forms.Application.Run(provider.GetRequiredService<Form1>());
     }
 
@@ -20,6 +25,9 @@ static class Program
     static ServiceProvider ComposeServices()
     {
         var services = new ServiceCollection();
+        var carpeta = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "LogiMarket360");
+        Directory.CreateDirectory(carpeta);
+        services.AddInfrastructure($"Data Source={Path.Combine(carpeta, "logimarket.db")}");
         services.AddTransient<Form1>();
         return services.BuildServiceProvider();
     }
