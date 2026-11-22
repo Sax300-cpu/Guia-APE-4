@@ -52,6 +52,9 @@ public sealed class Entorno : IDisposable
 
     public T Obtener<T>() where T : notnull => _alcance.ServiceProvider.GetRequiredService<T>();
 
+    /// <summary>Otro alcance del MISMO proveedor (otra vista/consumidor dentro de la misma aplicacion).</summary>
+    public IServiceScope NuevoAlcance() => _proveedor.CreateScope();
+
     public async Task IniciarSesionAsync(string usuario)
     {
         var clave = char.ToUpperInvariant(usuario[0]) + usuario[1..] + "123*";
