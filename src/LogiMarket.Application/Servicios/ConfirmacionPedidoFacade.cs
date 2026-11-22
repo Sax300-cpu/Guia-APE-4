@@ -22,7 +22,7 @@ public sealed record ResultadoConfirmacion(bool Exito, string Codigo, string Men
 /// </summary>
 public sealed class ConfirmacionPedidoFacade(IAutorizador autorizador, IRepositorioPedidos pedidos, IRepositorioCatalogo catalogo,
     IRepositorioPagos pagos, IRepositorioInventario inventario, IRepositorioOutbox outbox, IPasarelaPago pasarela,
-    IUnitOfWork uow, IClock reloj)
+    IUnitOfWork uow, IClock reloj, RegistroHistorialesBorrador historiales)
 {
     public async Task<ResultadoConfirmacion> ConfirmarAsync(int pedidoId, string claveIdempotencia, CancellationToken ct = default)
     {
@@ -44,6 +44,7 @@ public sealed class ConfirmacionPedidoFacade(IAutorizador autorizador, IReposito
         try
         {
             await uow.EjecutarEnTransaccionAsync(ct2 => ConfirmarEnTransaccionAsync(pedido, productos, claveIdempotencia, ct2), ct);
+            historiales.Bloquear(pedido.Id); // confirmado: ya no se puede deshacer ni rehacer
             return new ResultadoConfirmacion(true, "OK", "Pedido pagado.", pedido.Id, pedido.Total);
         }
         catch (CobroRechazadoException ex)

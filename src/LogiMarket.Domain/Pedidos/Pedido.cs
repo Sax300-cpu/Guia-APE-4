@@ -29,6 +29,25 @@ public interface IPrototipo<out T>
     T Clonar(DateTime ahora);
 }
 
+/// <summary>Memento: instantanea opaca e inmutable de un borrador (lineas anidadas y totales).</summary>
+public sealed class PedidoMemento
+{
+    internal IReadOnlyList<PedidoDetalle> Detalles { get; }
+    internal decimal Subtotal { get; }
+    internal decimal Descuento { get; }
+    internal decimal Total { get; }
+    internal string PoliticaDescuento { get; }
+
+    internal PedidoMemento(IReadOnlyList<PedidoDetalle> detalles, decimal subtotal, decimal descuento, decimal total, string politica)
+    {
+        Detalles = detalles;
+        Subtotal = subtotal;
+        Descuento = descuento;
+        Total = total;
+        PoliticaDescuento = politica;
+    }
+}
+
 /// <summary>Agregado raiz. No expone setters: todo cambio pasa por operaciones con invariantes.</summary>
 public sealed class Pedido : IPrototipo<Pedido>
 {
@@ -106,6 +125,22 @@ public sealed class Pedido : IPrototipo<Pedido>
     public void Despachar(DateTime ahora) => Transicionar(e => e.Despachar(), ahora);
     public void Entregar(DateTime ahora) => Transicionar(e => e.Entregar(), ahora);
     public void Cancelar(DateTime ahora) => Transicionar(e => e.Cancelar(), ahora);
+
+    /// <summary>Captura el estado editable completo (copia profunda).</summary>
+    public PedidoMemento CrearMemento() =>
+        new(_detalles.Select(d => d.Copiar()).ToList(), Subtotal, Descuento, Total, PoliticaDescuento);
+
+    /// <summary>Restaura un estado previo. Solo es posible en BORRADOR: un cobro confirmado no se deshace.</summary>
+    public void Restaurar(PedidoMemento memento)
+    {
+        ExigirEdicion();
+        _detalles.Clear();
+        _detalles.AddRange(memento.Detalles.Select(d => d.Copiar()));
+        Subtotal = memento.Subtotal;
+        Descuento = memento.Descuento;
+        Total = memento.Total;
+        PoliticaDescuento = memento.PoliticaDescuento;
+    }
 
     public Pedido Clonar(DateTime ahora)
     {
