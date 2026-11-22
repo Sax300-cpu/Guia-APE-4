@@ -1,6 +1,8 @@
 using LogiMarket.Application.Catalogo;
 using LogiMarket.Application.Comandos;
 using LogiMarket.Application.Comprobantes;
+using LogiMarket.Application.Coordinacion;
+using LogiMarket.Application.Pedidos;
 using LogiMarket.Application.Demo;
 using LogiMarket.Application.Entrega;
 using LogiMarket.Application.Eventos;
@@ -31,6 +33,9 @@ public static class ServiciosAplicacion
         services.AddSingleton<ServicioEntrega>();
 
         services.AddSingleton<CatalogoVisualFlyweightFactory>();
+        services.AddSingleton<RegistroHistorialesBorrador>();
+        services.AddSingleton<IMediadorVistas, FormularioPrincipalMediator>();
+        services.AddScoped<ServicioEdicionBorrador>();
         services.AddScoped<ServicioComprobantes>();
         services.AddScoped<IAutorizador, Autorizador>();
         services.AddScoped<ServicioAutenticacion>();
