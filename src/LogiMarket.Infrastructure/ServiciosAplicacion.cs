@@ -1,4 +1,6 @@
+using LogiMarket.Application.Catalogo;
 using LogiMarket.Application.Comandos;
+using LogiMarket.Application.Comprobantes;
 using LogiMarket.Application.Demo;
 using LogiMarket.Application.Entrega;
 using LogiMarket.Application.Eventos;
@@ -28,6 +30,8 @@ public static class ServiciosAplicacion
         services.AddSingleton<IFabricaEntrega, FabricaEntregaExpres>();
         services.AddSingleton<ServicioEntrega>();
 
+        services.AddSingleton<CatalogoVisualFlyweightFactory>();
+        services.AddScoped<ServicioComprobantes>();
         services.AddScoped<IAutorizador, Autorizador>();
         services.AddScoped<ServicioAutenticacion>();
         services.AddScoped<ServicioPedidos>();
