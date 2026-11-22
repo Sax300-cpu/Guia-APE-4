@@ -69,24 +69,3 @@ internal sealed class RepositorioUsuarios(LogiMarketDbContext db) : IRepositorio
         return db.Usuarios.FirstOrDefaultAsync(u => u.NombreUsuario == normalizado, ct);
     }
 }
-
-internal sealed class UnitOfWork(LogiMarketDbContext db) : IUnitOfWork
-{
-    public Task<int> GuardarCambiosAsync(CancellationToken ct = default) => db.SaveChangesAsync(ct);
-
-    public async Task EjecutarEnTransaccionAsync(Func<CancellationToken, Task> operacion, CancellationToken ct = default)
-    {
-        await using var transaccion = await db.Database.BeginTransactionAsync(ct);
-        try
-        {
-            await operacion(ct);
-            await db.SaveChangesAsync(ct);
-            await transaccion.CommitAsync(ct);
-        }
-        catch
-        {
-            await transaccion.RollbackAsync(ct);
-            throw;
-        }
-    }
-}

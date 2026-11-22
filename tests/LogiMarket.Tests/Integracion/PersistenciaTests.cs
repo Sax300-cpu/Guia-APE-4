@@ -1,3 +1,4 @@
+using LogiMarket.Application.Comun;
 using LogiMarket.Application.Puertos;
 using LogiMarket.Domain.Catalogo;
 using LogiMarket.Domain.Common;
@@ -110,7 +111,7 @@ public class PersistenciaTests : IDisposable
         await InicializarAsync();
         using var a = _bd.Abrir();
         a.Obtener<LogiMarketDbContext>().Elementos.Add(new ProductoSimple("P01", "Duplicado", 1m, 0.1m, 1));
-        await Assert.ThrowsAsync<DbUpdateException>(() => a.Obtener<IUnitOfWork>().GuardarCambiosAsync());
+        await Assert.ThrowsAsync<ViolacionUnicidadException>(() => a.Obtener<IUnitOfWork>().GuardarCambiosAsync());
     }
 
     [Fact] // Integridad: un solo pago aprobado por pedido, referencia/clave unicas y FK reales
@@ -165,7 +166,7 @@ public class PersistenciaTests : IDisposable
         enA.Descontar(1);
         await a.Obtener<IUnitOfWork>().GuardarCambiosAsync();
         enB.Descontar(1);
-        await Assert.ThrowsAsync<DbUpdateConcurrencyException>(() => b.Obtener<IUnitOfWork>().GuardarCambiosAsync());
+        await Assert.ThrowsAsync<ConflictoConcurrenciaException>(() => b.Obtener<IUnitOfWork>().GuardarCambiosAsync());
     }
 
     [Fact] // Transaccion: un fallo revierte todo lo hecho dentro

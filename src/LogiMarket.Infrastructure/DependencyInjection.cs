@@ -1,4 +1,5 @@
 using LogiMarket.Application.Puertos;
+using LogiMarket.Infrastructure.Pagos;
 using LogiMarket.Infrastructure.Persistencia;
 using LogiMarket.Infrastructure.Seguridad;
 using LogiMarket.Infrastructure.Sistema;
@@ -16,6 +17,13 @@ public static class DependencyInjection
         services.AddScoped<IRepositorioClientes, RepositorioClientes>();
         services.AddScoped<IRepositorioPedidos, RepositorioPedidos>();
         services.AddScoped<IRepositorioUsuarios, RepositorioUsuarios>();
+        services.AddScoped<IRepositorioPagos, RepositorioPagos>();
+        services.AddScoped<IRepositorioInventario, RepositorioInventario>();
+        services.AddScoped<IRepositorioDespachos, RepositorioDespachos>();
+        services.AddScoped<IRepositorioDevoluciones, RepositorioDevoluciones>();
+        services.AddScoped<IRepositorioOutbox, RepositorioOutbox>();
+        services.AddScoped<IRepositorioAuditoria, RepositorioAuditoria>();
+        services.AddScoped<IPasarelaPago, PasarelaSimulada>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<InicializadorBaseDatos>();
         services.AddSingleton<IPasswordHasher, Pbkdf2PasswordHasher>();

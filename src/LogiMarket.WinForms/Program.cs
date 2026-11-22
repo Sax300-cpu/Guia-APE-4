@@ -28,6 +28,7 @@ static class Program
         var carpeta = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "LogiMarket360");
         Directory.CreateDirectory(carpeta);
         services.AddInfrastructure($"Data Source={Path.Combine(carpeta, "logimarket.db")}");
+        services.AddAplicacion();
         services.AddTransient<Form1>();
         return services.BuildServiceProvider();
     }
