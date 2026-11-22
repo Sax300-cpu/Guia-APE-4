@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
     <ProjectReference Include="..\LogiMarket.Application\LogiMarket.Application.csproj" />
@@ -15,6 +15,10 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
+    <ApplicationHighDpiMode>SystemAware</ApplicationHighDpiMode>
+    <ApplicationDefaultFont>Segoe UI, 9.5pt</ApplicationDefaultFont>
+    <ApplicationVisualStyles>true</ApplicationVisualStyles>
+    <AssemblyTitle>LogiMarket 360</AssemblyTitle>
   </PropertyGroup>
 
 </Project>
