@@ -1,3 +1,4 @@
+using LogiMarket.Application.Consultas;
 using LogiMarket.Domain.Auditoria;
 using LogiMarket.Domain.Despachos;
 using LogiMarket.Domain.Devoluciones;
@@ -25,6 +26,8 @@ public interface IRepositorioPagos
 public interface IRepositorioInventario
 {
     Task AgregarMovimientoAsync(MovimientoInventario movimiento, CancellationToken ct = default);
+    Task<IReadOnlyList<MovimientoDto>> ListarMovimientosAsync(string? sku, int maximo, CancellationToken ct = default);
+    Task<bool> ExistenMovimientosAsync(int productoId, CancellationToken ct = default);
 }
 
 public interface IRepositorioDespachos
@@ -44,6 +47,7 @@ public interface IRepositorioOutbox
     Task AgregarAsync(EventoOutbox evento, CancellationToken ct = default);
     Task<IReadOnlyList<int>> IdsPendientesAsync(int maximo, CancellationToken ct = default);
     Task<EventoOutbox?> ObtenerAsync(int id, CancellationToken ct = default);
+    Task<ResumenOutbox> ResumenAsync(CancellationToken ct = default);
 }
 
 public interface IRepositorioAuditoria

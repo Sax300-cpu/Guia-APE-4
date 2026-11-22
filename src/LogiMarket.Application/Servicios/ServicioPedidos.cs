@@ -33,6 +33,17 @@ public sealed class ServicioPedidos(IRepositorioPedidos pedidos, IRepositorioCli
         return pedido.Id;
     }
 
+    /// <summary>Prototype: duplica un borrador como plantilla reutilizable (nueva identidad, sin estado de pago).</summary>
+    public async Task<int> ClonarBorradorAsync(int pedidoId, CancellationToken ct = default)
+    {
+        await autorizador.ExigirAsync(Permiso.GestionarPedidos, ct);
+        var original = await pedidos.ObtenerPorIdAsync(pedidoId, ct) ?? throw new DomainException("El pedido no existe.");
+        var copia = original.Clonar(reloj.UtcAhora);
+        await pedidos.AgregarAsync(copia, ct);
+        await uow.GuardarCambiosAsync(ct);
+        return copia.Id;
+    }
+
     public Task<ResultadoOperacion> CambiarCantidadAsync(int pedidoId, string sku, int cantidad, CancellationToken ct = default) =>
         EjecutarAsync(pedidoId, p => p.CambiarCantidad(sku, cantidad, calculadora), ct);
 

@@ -43,6 +43,9 @@ public static class ServiciosAplicacion
         services.AddScoped<ServicioClientes>();
         services.AddScoped<ServicioCatalogo>();
         services.AddScoped<ConsultasPedidos>();
+        services.AddScoped<ConsultasCatalogo>();
+        services.AddScoped<ConsultasInventario>();
+        services.AddScoped<ConsultasAuditoria>();
         services.AddScoped<ConfirmacionPedidoFacade>();
         services.AddScoped<ServicioDespacho>();
         services.AddScoped<ServicioDevoluciones>();

@@ -42,7 +42,7 @@ internal sealed class UnitOfWork(LogiMarketDbContext db) : IUnitOfWork
     /// <summary>Traduce fallos de EF/SQLite a excepciones de la aplicacion; null si no hay traduccion.</summary>
     private static Exception? Traducir(Exception ex)
     {
-        if (ex is ConflictoConcurrenciaException or ViolacionUnicidadException) return null;
+        if (ex is ConflictoConcurrenciaException or ViolacionUnicidadException or IntegridadReferencialException) return null;
         if (ex is DbUpdateConcurrencyException)
             return new ConflictoConcurrenciaException("El registro fue modificado por otra operacion.", ex);
 
@@ -53,6 +53,8 @@ internal sealed class UnitOfWork(LogiMarketDbContext db) : IUnitOfWork
             SqliteBusy or SqliteLocked => new ConflictoConcurrenciaException("La base de datos esta ocupada por otra operacion.", ex),
             SqliteConstraint when sqlite.Message.Contains("UNIQUE", StringComparison.OrdinalIgnoreCase)
                 => new ViolacionUnicidadException("Violacion de restriccion de unicidad.", ex),
+            SqliteConstraint when sqlite.Message.Contains("FOREIGN KEY", StringComparison.OrdinalIgnoreCase)
+                => new IntegridadReferencialException("El registro esta referenciado por otros datos.", ex),
             _ => null
         };
     }

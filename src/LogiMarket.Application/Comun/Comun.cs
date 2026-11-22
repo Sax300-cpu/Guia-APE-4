@@ -14,3 +14,4 @@ public sealed class ConflictoConcurrenciaException(string mensaje, Exception? in
 public sealed class ViolacionUnicidadException(string mensaje, Exception? interna = null) : Exception(mensaje, interna);
 
 public sealed class CobroRechazadoException(string motivo) : Exception(motivo);
+public sealed class IntegridadReferencialException(string mensaje, Exception? interna = null) : Exception(mensaje, interna);

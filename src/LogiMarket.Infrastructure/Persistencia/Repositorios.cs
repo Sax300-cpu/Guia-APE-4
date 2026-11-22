@@ -25,6 +25,12 @@ internal sealed class RepositorioCatalogo(LogiMarketDbContext db) : IRepositorio
 
     public async Task AgregarAsync(ElementoCatalogo elemento, CancellationToken ct = default) =>
         await db.Elementos.AddAsync(elemento, ct);
+
+    public Task EliminarAsync(ElementoCatalogo elemento, CancellationToken ct = default)
+    {
+        db.Elementos.Remove(elemento);
+        return Task.CompletedTask;
+    }
 }
 
 internal sealed class RepositorioClientes(LogiMarketDbContext db) : IRepositorioClientes

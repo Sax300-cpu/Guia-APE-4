@@ -12,6 +12,7 @@ public interface IRepositorioCatalogo
     Task<IReadOnlyList<ElementoCatalogo>> ObtenerTodosAsync(CancellationToken ct = default);
     Task<ElementoCatalogo?> ObtenerPorSkuAsync(string sku, CancellationToken ct = default);
     Task AgregarAsync(ElementoCatalogo elemento, CancellationToken ct = default);
+    Task EliminarAsync(ElementoCatalogo elemento, CancellationToken ct = default);
 }
 
 public interface IRepositorioClientes
