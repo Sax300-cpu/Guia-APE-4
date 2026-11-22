@@ -1,3 +1,4 @@
+using LogiMarket.Application.Consultas;
 using LogiMarket.Application.Puertos;
 using LogiMarket.Application.Seguridad;
 using LogiMarket.Domain.Catalogo;
@@ -55,5 +56,13 @@ public sealed class ConsultasPedidos(IRepositorioPedidos pedidos, IAutorizador a
         return (await pedidos.ListarAsync(ct))
             .Select(p => new PedidoResumenDto(p.Id, p.Cliente.Nombre, p.Estado.ToString(), p.Total, p.CreadoEn))
             .ToList();
+    }
+
+    /// <summary>Filtra con el Interpreter (ESTADO = ..., TOTAL >= ..., CLIENTE = ..., AND/OR y parentesis).</summary>
+    public async Task<IReadOnlyList<PedidoResumenDto>> FiltrarAsync(string filtro, CancellationToken ct = default)
+    {
+        var expresion = ParserConsultas.Analizar(filtro); // un error de sintaxis se informa antes de leer datos
+        var todos = await ListarAsync(ct);
+        return todos.Where(expresion.Evaluar).ToList();
     }
 }
