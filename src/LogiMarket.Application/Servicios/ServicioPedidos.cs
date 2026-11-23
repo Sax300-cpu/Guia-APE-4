@@ -44,9 +44,6 @@ public sealed class ServicioPedidos(IRepositorioPedidos pedidos, IRepositorioCli
         return copia.Id;
     }
 
-    public Task<ResultadoOperacion> CambiarCantidadAsync(int pedidoId, string sku, int cantidad, CancellationToken ct = default) =>
-        EjecutarAsync(pedidoId, p => p.CambiarCantidad(sku, cantidad, calculadora), ct);
-
     public Task<ResultadoOperacion> CancelarAsync(int pedidoId, CancellationToken ct = default) =>
         EjecutarAsync(pedidoId, p => p.Cancelar(reloj.UtcAhora), ct);
 

@@ -119,7 +119,7 @@ public class FlujoVentasTests(Xunit.Abstractions.ITestOutputHelper salida)
         var servicio = e.Obtener<ServicioPedidos>();
 
         Assert.False((await servicio.CancelarAsync(id)).Exito);
-        Assert.False((await servicio.CambiarCantidadAsync(id, "KIT_TELETRABAJO", 5)).Exito);
+        Assert.False((await e.Obtener<ServicioEdicionBorrador>().CambiarCantidadAsync(id, "KIT_TELETRABAJO", 5)).Exito);
 
         using var otra = e.AbrirOtraSesion();
         var pedido = (await otra.Obtener<IRepositorioPedidos>().ObtenerPorIdAsync(id))!;
