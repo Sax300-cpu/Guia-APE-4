@@ -29,13 +29,13 @@ public abstract class ProcesarDevolucion(DependenciasDevolucion deps)
     public async Task<ResultadoDevolucion> EjecutarAsync(Pedido pedido, SolicitudDevolucion solicitud, CancellationToken ct = default)
     {
         if (await deps.Devoluciones.ObtenerPorPedidoAsync(pedido.Id, ct) is not null)
-            return Rechazo("YA_DEVUELTO", "El pedido ya tiene una devolucion registrada.");
+            return Rechazo(CodigosResultado.YaDevuelto, "El pedido ya tiene una devolucion registrada.");
 
         var elegibilidad = await VerificarElegibilidadAsync(pedido, ct);
-        if (!elegibilidad.Ok) return Rechazo("NO_ELEGIBLE", elegibilidad.Mensaje);
+        if (!elegibilidad.Ok) return Rechazo(CodigosResultado.NoElegible, elegibilidad.Mensaje);
 
         var inspeccion = InspeccionarCondicion(solicitud);
-        if (!inspeccion.Ok) return Rechazo("CONDICION_NO_CUMPLIDA", inspeccion.Mensaje);
+        if (!inspeccion.Ok) return Rechazo(CodigosResultado.CondicionNoCumplida, inspeccion.Mensaje);
 
         var reembolso = CalcularReembolso(pedido);
         try
@@ -48,11 +48,11 @@ public abstract class ProcesarDevolucion(DependenciasDevolucion deps)
         }
         catch (ViolacionUnicidadException)
         {
-            return Rechazo("YA_DEVUELTO", "El pedido ya tiene una devolucion registrada.");
+            return Rechazo(CodigosResultado.YaDevuelto, "El pedido ya tiene una devolucion registrada.");
         }
         catch (ConflictoConcurrenciaException)
         {
-            return Rechazo("CONFLICTO", "El inventario cambio durante la operacion; se cancelo sin efectos.");
+            return Rechazo(CodigosResultado.Conflicto, "El inventario cambio durante la operacion; se cancelo sin efectos.");
         }
         return new ResultadoDevolucion(true, "OK", "Devolucion aceptada.", reembolso);
     }
@@ -119,7 +119,7 @@ public sealed class ServicioDevoluciones(IRepositorioPedidos pedidos, IEnumerabl
     {
         await autorizador.ExigirAsync(Permiso.ProcesarDevolucion, ct);
         var pedido = await pedidos.ObtenerPorIdAsync(solicitud.PedidoId, ct);
-        if (pedido is null) return new ResultadoDevolucion(false, "NO_ENCONTRADO", "El pedido no existe.", 0m);
+        if (pedido is null) return new ResultadoDevolucion(false, CodigosResultado.NoEncontrado, CodigosResultado.MensajePedidoInexistente, 0m);
         return await _procesos[solicitud.Motivo].EjecutarAsync(pedido, solicitud, ct);
     }
 }

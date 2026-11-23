@@ -44,7 +44,7 @@ public sealed class ServicioEdicionBorrador(IRepositorioPedidos pedidos, IReposi
     {
         await autorizador.ExigirAsync(Permiso.GestionarPedidos, ct);
         var pedido = await pedidos.ObtenerPorIdAsync(pedidoId, ct);
-        if (pedido is null) return ResultadoOperacion.Rechazo("NO_ENCONTRADO", "El pedido no existe.");
+        if (pedido is null) return ResultadoOperacion.Rechazo(CodigosResultado.NoEncontrado, CodigosResultado.MensajePedidoInexistente);
         var historial = historiales.Obtener(pedidoId);
         var registrado = false;
         try
@@ -59,7 +59,7 @@ public sealed class ServicioEdicionBorrador(IRepositorioPedidos pedidos, IReposi
         catch (DomainException ex)
         {
             if (registrado) historial.DescartarUltimoRegistro(); // la edicion fallida no debe ocupar un paso
-            return ResultadoOperacion.Rechazo("REGLA_DE_NEGOCIO", ex.Message);
+            return ResultadoOperacion.Rechazo(CodigosResultado.ReglaDeNegocio, ex.Message);
         }
         await uow.GuardarCambiosAsync(ct);
         return ResultadoOperacion.Ok();

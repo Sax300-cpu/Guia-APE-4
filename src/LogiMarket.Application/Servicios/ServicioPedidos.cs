@@ -37,7 +37,7 @@ public sealed class ServicioPedidos(IRepositorioPedidos pedidos, IRepositorioCli
     public async Task<int> ClonarBorradorAsync(int pedidoId, CancellationToken ct = default)
     {
         await autorizador.ExigirAsync(Permiso.GestionarPedidos, ct);
-        var original = await pedidos.ObtenerPorIdAsync(pedidoId, ct) ?? throw new DomainException("El pedido no existe.");
+        var original = await pedidos.ObtenerPorIdAsync(pedidoId, ct) ?? throw new DomainException(CodigosResultado.MensajePedidoInexistente);
         var copia = original.Clonar(reloj.UtcAhora);
         await pedidos.AgregarAsync(copia, ct);
         await uow.GuardarCambiosAsync(ct);
@@ -52,7 +52,7 @@ public sealed class ServicioPedidos(IRepositorioPedidos pedidos, IRepositorioCli
     {
         await autorizador.ExigirAsync(Permiso.GestionarPedidos, ct);
         var pedido = await pedidos.ObtenerPorIdAsync(pedidoId, ct);
-        if (pedido is null) return ResultadoOperacion.Rechazo("NO_ENCONTRADO", "El pedido no existe.");
+        if (pedido is null) return ResultadoOperacion.Rechazo(CodigosResultado.NoEncontrado, CodigosResultado.MensajePedidoInexistente);
         var productos = (await catalogo.ObtenerTodosAsync(ct)).OfType<Domain.Catalogo.ProductoSimple>().ToDictionary(p => p.Sku);
         var resultado = PipelineValidacion.Crear().Validar(new ContextoValidacion(pedido, productos, autorizador.Tiene(Permiso.GestionarPedidos)));
         if (!resultado.Valido) return ResultadoOperacion.Rechazo(resultado.Eslabon!, resultado.Mensaje!);
@@ -62,7 +62,7 @@ public sealed class ServicioPedidos(IRepositorioPedidos pedidos, IRepositorioCli
         }
         catch (DomainException ex)
         {
-            return ResultadoOperacion.Rechazo("ESTADO_INVALIDO", ex.Message);
+            return ResultadoOperacion.Rechazo(CodigosResultado.EstadoInvalido, ex.Message);
         }
         await uow.GuardarCambiosAsync(ct);
         return ResultadoOperacion.Ok("Pedido validado.");
@@ -72,14 +72,14 @@ public sealed class ServicioPedidos(IRepositorioPedidos pedidos, IRepositorioCli
     {
         await autorizador.ExigirAsync(Permiso.GestionarPedidos, ct);
         var pedido = await pedidos.ObtenerPorIdAsync(pedidoId, ct);
-        if (pedido is null) return ResultadoOperacion.Rechazo("NO_ENCONTRADO", "El pedido no existe.");
+        if (pedido is null) return ResultadoOperacion.Rechazo(CodigosResultado.NoEncontrado, CodigosResultado.MensajePedidoInexistente);
         try
         {
             accion(pedido);
         }
         catch (DomainException ex)
         {
-            return ResultadoOperacion.Rechazo("REGLA_DE_NEGOCIO", ex.Message);
+            return ResultadoOperacion.Rechazo(CodigosResultado.ReglaDeNegocio, ex.Message);
         }
         await uow.GuardarCambiosAsync(ct);
         return ResultadoOperacion.Ok();

@@ -16,14 +16,14 @@ public sealed class ServicioDespacho(IRepositorioPedidos pedidos, IRepositorioDe
     {
         await autorizador.ExigirAsync(Permiso.DespacharPedido, ct);
         var pedido = await pedidos.ObtenerPorIdAsync(pedidoId, ct);
-        if (pedido is null) return ResultadoOperacion.Rechazo("NO_ENCONTRADO", "El pedido no existe.");
+        if (pedido is null) return ResultadoOperacion.Rechazo(CodigosResultado.NoEncontrado, CodigosResultado.MensajePedidoInexistente);
         try
         {
             pedido.Despachar(reloj.UtcAhora); // el State rechaza si no esta PAGADO
         }
         catch (DomainException ex)
         {
-            return ResultadoOperacion.Rechazo("ESTADO_INVALIDO", ex.Message);
+            return ResultadoOperacion.Rechazo(CodigosResultado.EstadoInvalido, ex.Message);
         }
 
         var guia = entrega.GenerarGuia(pedido.Entrega, pedido.Id);
@@ -38,7 +38,7 @@ public sealed class ServicioDespacho(IRepositorioPedidos pedidos, IRepositorioDe
     {
         await autorizador.ExigirAsync(Permiso.EntregarPedido, ct);
         var pedido = await pedidos.ObtenerPorIdAsync(pedidoId, ct);
-        if (pedido is null) return ResultadoOperacion.Rechazo("NO_ENCONTRADO", "El pedido no existe.");
+        if (pedido is null) return ResultadoOperacion.Rechazo(CodigosResultado.NoEncontrado, CodigosResultado.MensajePedidoInexistente);
         var despacho = await despachos.ObtenerPorPedidoAsync(pedidoId, ct);
         try
         {
@@ -47,7 +47,7 @@ public sealed class ServicioDespacho(IRepositorioPedidos pedidos, IRepositorioDe
         }
         catch (DomainException ex)
         {
-            return ResultadoOperacion.Rechazo("ESTADO_INVALIDO", ex.Message);
+            return ResultadoOperacion.Rechazo(CodigosResultado.EstadoInvalido, ex.Message);
         }
         await uow.GuardarCambiosAsync(ct);
         return ResultadoOperacion.Ok("Pedido entregado.");

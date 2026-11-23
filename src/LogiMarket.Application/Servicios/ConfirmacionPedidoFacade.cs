@@ -28,10 +28,10 @@ public sealed class ConfirmacionPedidoFacade(IAutorizador autorizador, IReposito
     {
         await autorizador.ExigirAsync(Permiso.CobrarPedido, ct);
         if (string.IsNullOrWhiteSpace(claveIdempotencia))
-            return Rechazo(pedidoId, 0m, "CLAVE_OBLIGATORIA", "La clave de idempotencia es obligatoria.");
+            return Rechazo(pedidoId, 0m, CodigosResultado.ClaveObligatoria, "La clave de idempotencia es obligatoria.");
 
         var pedido = await pedidos.ObtenerPorIdAsync(pedidoId, ct);
-        if (pedido is null) return Rechazo(pedidoId, 0m, "NO_ENCONTRADO", "El pedido no existe.");
+        if (pedido is null) return Rechazo(pedidoId, 0m, CodigosResultado.NoEncontrado, CodigosResultado.MensajePedidoInexistente);
 
         var previo = await pagos.ObtenerPorClaveAsync(claveIdempotencia, ct);
         if (previo is not null) return ResultadoOriginal(previo, pedido);
@@ -39,7 +39,7 @@ public sealed class ConfirmacionPedidoFacade(IAutorizador autorizador, IReposito
         var productos = (await catalogo.ObtenerTodosAsync(ct)).OfType<ProductoSimple>().ToDictionary(p => p.Sku);
         var validacion = PipelineValidacion.Crear().Validar(new ContextoValidacion(pedido, productos, autorizador.Tiene(Permiso.CobrarPedido)));
         if (!validacion.Valido)
-            return Rechazo(pedidoId, pedido.Total, "VALIDACION", validacion.Mensaje!, validacion.Eslabon);
+            return Rechazo(pedidoId, pedido.Total, CodigosResultado.Validacion, validacion.Mensaje!, validacion.Eslabon);
 
         try
         {
@@ -49,22 +49,22 @@ public sealed class ConfirmacionPedidoFacade(IAutorizador autorizador, IReposito
         }
         catch (CobroRechazadoException ex)
         {
-            return Rechazo(pedidoId, pedido.Total, "COBRO_RECHAZADO", ex.Message);
+            return Rechazo(pedidoId, pedido.Total, CodigosResultado.CobroRechazado, ex.Message);
         }
         catch (ConflictoConcurrenciaException)
         {
-            return Rechazo(pedidoId, pedido.Total, "CONFLICTO", "Otro cobro modifico el inventario al mismo tiempo; la operacion se cancelo.");
+            return Rechazo(pedidoId, pedido.Total, CodigosResultado.Conflicto, "Otro cobro modifico el inventario al mismo tiempo; la operacion se cancelo.");
         }
         catch (ViolacionUnicidadException)
         {
             var original = await pagos.ObtenerPorClaveAsync(claveIdempotencia, ct);
             return original is null
-                ? Rechazo(pedidoId, pedido.Total, "DUPLICADO", "La operacion ya fue registrada.")
+                ? Rechazo(pedidoId, pedido.Total, CodigosResultado.Duplicado, "La operacion ya fue registrada.")
                 : ResultadoOriginal(original, pedido);
         }
         catch (DomainException ex)
         {
-            return Rechazo(pedidoId, pedido.Total, "REGLA_DE_NEGOCIO", ex.Message);
+            return Rechazo(pedidoId, pedido.Total, CodigosResultado.ReglaDeNegocio, ex.Message);
         }
     }
 
@@ -99,7 +99,7 @@ public sealed class ConfirmacionPedidoFacade(IAutorizador autorizador, IReposito
     private static ResultadoConfirmacion ResultadoOriginal(Pago previo, Pedido pedido) =>
         previo.PedidoId == pedido.Id
             ? new ResultadoConfirmacion(true, "OK", "Operacion ya confirmada: se devuelve el resultado original.", pedido.Id, previo.Monto, EsRepeticion: true)
-            : Rechazo(pedido.Id, pedido.Total, "CLAVE_EN_USO", "La clave de idempotencia pertenece a otro pedido.");
+            : Rechazo(pedido.Id, pedido.Total, CodigosResultado.ClaveEnUso, "La clave de idempotencia pertenece a otro pedido.");
 
     private static ResultadoConfirmacion Rechazo(int pedidoId, decimal total, string codigo, string mensaje, string? eslabon = null) =>
         new(false, codigo, mensaje, pedidoId, total, eslabon);
