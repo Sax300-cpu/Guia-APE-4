@@ -45,7 +45,7 @@ public sealed class PedidoDetalle
     public static PedidoDetalle Desde(ElementoCatalogo elemento, int cantidad)
     {
         ArgumentNullException.ThrowIfNull(elemento);
-        if (cantidad <= 0) throw new DomainException("La cantidad debe ser positiva.");
+        Guardia.CantidadPositiva(cantidad);
 
         var detalle = new PedidoDetalle
         {
@@ -71,7 +71,7 @@ public sealed class PedidoDetalle
 
     internal void CambiarCantidad(int cantidad)
     {
-        if (cantidad <= 0) throw new DomainException("La cantidad debe ser positiva.");
+        Guardia.CantidadPositiva(cantidad);
         Cantidad = cantidad;
     }
 

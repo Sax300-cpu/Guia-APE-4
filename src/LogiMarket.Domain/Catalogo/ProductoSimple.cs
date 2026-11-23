@@ -34,7 +34,7 @@ public sealed class ProductoSimple : ElementoCatalogo
 
     public void Descontar(int cantidad)
     {
-        if (cantidad <= 0) throw new DomainException("La cantidad a descontar debe ser positiva.");
+        Guardia.CantidadPositiva(cantidad, "La cantidad a descontar debe ser positiva.");
         if (cantidad > Stock) throw new DomainException($"Stock insuficiente de {Sku}: requiere {cantidad}, disponible {Stock}.");
         Stock -= cantidad;
         Version++;
@@ -42,7 +42,7 @@ public sealed class ProductoSimple : ElementoCatalogo
 
     public void Reponer(int cantidad)
     {
-        if (cantidad <= 0) throw new DomainException("La cantidad a reponer debe ser positiva.");
+        Guardia.CantidadPositiva(cantidad, "La cantidad a reponer debe ser positiva.");
         Stock += cantidad;
         Version++;
     }

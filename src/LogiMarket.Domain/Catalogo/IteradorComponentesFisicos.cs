@@ -21,7 +21,7 @@ public sealed class IteradorComponentesFisicos : IEnumerator<ComponenteFisico>
 
     internal IteradorComponentesFisicos(ElementoCatalogo raiz, int cantidad)
     {
-        if (cantidad <= 0) throw new DomainException("La cantidad debe ser positiva.");
+        Guardia.CantidadPositiva(cantidad);
         _raiz = raiz;
         _cantidadRaiz = cantidad;
     }

@@ -14,7 +14,7 @@ public sealed class KitComponente
 
     internal KitComponente(ElementoCatalogo hijo, int cantidad)
     {
-        if (cantidad <= 0) throw new DomainException("La cantidad del componente debe ser positiva.");
+        Guardia.CantidadPositiva(cantidad, "La cantidad del componente debe ser positiva.");
         Hijo = hijo;
         Cantidad = cantidad;
     }
