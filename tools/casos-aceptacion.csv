@@ -1,39 +1,39 @@
 ﻿ID~Entrada~Esperado~Capturas~Logs
-P01~Base inexistente + seed, luego relanzar seed~Migraciones aplicadas, 5 productos, 2 kits y roles, sin duplicados al relanzar~P01_catalogo_seed.png|P01_inventario_seed.png|P01_catalogo_tras_relanzar.png~
-P02~Ana VIP compra KIT_TELETRABAJO x1 ESTANDAR, base nueva~Total 59.00, P01=7, P02=4, P03=19, PAGADO y un pago~P02_carrito_ana.png|P02_cobro_ana.png|P02_inventario_despues.png~
-P03~Luis NORMAL compra 2 P04 + 2 P05 EXPRES, base nueva~Total 102.00, P04=2, P05=28, un pago~P03_carrito_luis.png|P03_cobro_luis.png|P03_inventario_despues.png~
-P04~Carmen MAYORISTA compra P03 x10 ESTANDAR, base nueva~Total 90.00, P03=10, descuento 15.00~P04_carrito_carmen.png|P04_cobro_e_inventario.png~
-P05~KIT_TELETRABAJO x6 con stock inicial~Rechazo por P02 insuficiente, sin pago/stock/evento de exito~P05_carrito_kit_x6.png|P05_rechazo_validacion.png|P05_cobro_rechazado.png|P05_inventario_sin_cambios.png~
-P06~Error de cobro inducido en pedido valido~Inventario y estado previo conservados, sin pago aprobado ni Outbox de exito~P06_cobro_fallido.png|P06_sin_efectos.png~
-P07~Repetir confirmacion con la misma clave de idempotencia~Un pago y un movimiento por SKU, devuelve el resultado original~~logs/log-pruebas-automaticas.txt
-P08~Pedido PAGADO: intentar cancelar y modificar precio~Ambas operaciones denegadas, datos e historial intactos~P08_cancelar_pagado_rechazado.png~
-P09~Despachar y entregar con BODEGA, despachar sin pago~Exito solo en secuencia permitida, rechazo sin cambios~P09_entregar_sin_despachar_rechazado.png|P09_entregado.png~
-P10~Cerrar y reabrir, consultar pedido, stock, pago y auditoria~La informacion persiste en SQLite y coincide~P10_pedidos_tras_reinicio.png|P10_inventario_tras_reinicio.png|P10_auditoria_tras_reinicio.png~
-P11~Factory Method: alternar EMAIL/SMS tras un evento~Cada creador retorna su notificador y registra el aviso correcto~P11_notificacion_sms.png|P11_notificacion_email.png~
-P12~Abstract Factory: ESTANDAR/EXPRES~Tarifas 5/12 y plazos 3/1 dias, guias coherentes con la familia~P12_guia_estandar.png|P12_guia_expres.png~
+P01~Base inexistente + seed, luego relanzar seed~Migraciones aplicadas, 5 productos, 2 kits y roles, sin duplicados al relanzar~P01_catalogo_seed.png|P01_inventario_seed.png|P01_catalogo_tras_relanzar.png|P01_base_desde_cero.png~
+P02~Ana VIP compra KIT_TELETRABAJO x1 ESTANDAR, base nueva~Total 59.00, P01=7, P02=4, P03=19, PAGADO y un pago~P02_carrito_ana.png|P02_cobro_ana.png|P02_inventario_despues.png|P02_P03_P04_cifras_oficiales.png~
+P03~Luis NORMAL compra 2 P04 + 2 P05 EXPRES, base nueva~Total 102.00, P04=2, P05=28, un pago~P03_carrito_luis.png|P03_cobro_luis.png|P03_inventario_despues.png|P02_P03_P04_cifras_oficiales.png~
+P04~Carmen MAYORISTA compra P03 x10 ESTANDAR, base nueva~Total 90.00, P03=10, descuento 15.00~P04_carrito_carmen.png|P04_cobro_e_inventario.png|P02_P03_P04_cifras_oficiales.png~
+P05~KIT_TELETRABAJO x6 con stock inicial~Rechazo por P02 insuficiente, sin pago/stock/evento de exito~P05_carrito_kit_x6.png|P05_rechazo_validacion.png|P05_cobro_rechazado.png|P05_inventario_sin_cambios.png|P05_P06_P07_rechazos.png~
+P06~Error de cobro inducido en pedido valido~Inventario y estado previo conservados, sin pago aprobado ni Outbox de exito~P06_cobro_fallido.png|P06_sin_efectos.png|P05_P06_P07_rechazos.png~
+P07~Repetir confirmacion con la misma clave de idempotencia~Un pago y un movimiento por SKU, devuelve el resultado original~P05_P06_P07_rechazos.png~logs/log-pruebas-automaticas.txt
+P08~Pedido PAGADO: intentar cancelar y modificar precio~Ambas operaciones denegadas, datos e historial intactos~P08_cancelar_pagado_rechazado.png|P08_P09_P10_ciclo_y_reinicio.png~
+P09~Despachar y entregar con BODEGA, despachar sin pago~Exito solo en secuencia permitida, rechazo sin cambios~P09_entregar_sin_despachar_rechazado.png|P09_entregado.png|P08_P09_P10_ciclo_y_reinicio.png~
+P10~Cerrar y reabrir, consultar pedido, stock, pago y auditoria~La informacion persiste en SQLite y coincide~P10_pedidos_tras_reinicio.png|P10_inventario_tras_reinicio.png|P10_auditoria_tras_reinicio.png|P10_persistencia_reinicio.png~
+P11~Factory Method: alternar EMAIL/SMS tras un evento~Cada creador retorna su notificador y registra el aviso correcto~P11_notificacion_sms.png|P11_notificacion_email.png|P11_P12_P30_P37_outbox_fabricas.png~
+P12~Abstract Factory: ESTANDAR/EXPRES~Tarifas 5/12 y plazos 3/1 dias, guias coherentes con la familia~P12_guia_estandar.png|P12_guia_expres.png|P11_P12_P30_P37_outbox_fabricas.png~
 P13~Builder: pedido vacio y pedido completo~Incompleto rechazado, completo crea agregado valido~~logs/log-pruebas-automaticas.txt
 P14~Prototype: clonar un borrador y editar cantidad~Copia profunda, original intacto~P14_copia_modificada.png|P14_original_intacto.png~
-P15~Singleton: consultar metricas desde dos vistas~Misma instancia compartida, contadores observables y thread-safe~P15_metricas_coherentes.png~
-P16~Adapter: proveedor legado y alternativo~Cobros desde ambos con el mismo contrato, legado intacto~~logs/log-pruebas-automaticas.txt
-P17~Bridge: dos comprobantes x dos medios~Cuatro combinaciones, VistaPrevia visible y TXT real~P17_venta_vista.png|P17_venta_txt.png|P17_devolucion_vista.png|P17_devolucion_txt.png~
-P18~Composite: kits y composicion anidada, intentar ciclo~Precios 50/60, expansion correcta, ciclo rechazado~~logs/log-pruebas-automaticas.txt
-P19~Decorator: cobro autorizado exitoso/fallido~LOG de inicio y fin/error rodea la ejecucion sin alterar el resultado~~logs/P19_decorator.txt
-P20~Facade: confirmar con fallo en un colaborador~Operacion consistente, ninguna persistencia parcial indebida~~logs/log-pruebas-automaticas.txt
-P21~Flyweight: 1.000 filas con metadatos repetidos~ReferenceEquals true, identidad y memoria documentadas~~logs/P21_flyweight.txt
-P22~Proxy: rol CONSULTA/BODEGA intenta pagar~Rechazo antes de Decorator/Adapter, sin cobro ni LOG de cobro~P22_menu_consulta.png|P22_botones_deshabilitados.png~logs/P22_proxy.txt
-P23~Chain: pedido sin cliente y sin stock, corregir un error~Se informa la primera validacion y luego la siguiente, sin cobro~P23_cliente_inactivo_rechazado.png|P23_tras_corregir.png~
-P24~Command: confirmar desde UI e invocador de prueba~Mismo comando y resultado funcional, historial de invocacion~P24_bitacora_comandos.png~
-P25~Interpreter: ESTADO = PAGADO AND TOTAL >= 50~Devuelve unicamente pedidos que cumplen el filtro~P25_filtro.png~
-P26~Interpreter: sintaxis erronea y parentesis~Error legible sin SQL concatenado, precedencia correcta~P26_error_sintaxis.png|P26_parentesis.png~
-P27~Iterator: recorrer KIT_TELETRABAJO~P01, P02, P03 una vez por unidad requerida, sin bucle~~logs/log-pruebas-automaticas.txt
-P28~Mediator: confirmar y revisar tres vistas~Catalogo, pedidos y metricas se refrescan sin acoplamiento directo~~logs/log-pruebas-automaticas.txt
-P29~Memento: tres ediciones, dos deshacer y un rehacer~Se restauran borradores completos, no se deshace un pago~P29_tras_deshacer.png|P29_tras_rehacer.png~
-P30~Observer: PedidoPagado con tres suscriptores~Notificacion, auditoria y metrica actualizadas una vez~P30_eventos_observer.png~
-P31~State: ciclo valido y PAGADO a CANCELADO invalido~Transiciones con reglas por estado, sin escritura directa~P31_historial_pagado.png|P31_historial_entregado.png~
-P32~Strategy: VIP, MAYORISTA, NORMAL y nueva promocion~Descuentos 6/15/0, extension sin editar la calculadora central~~logs/log-pruebas-automaticas.txt
-P33~Template Method: defecto dia 20, arrepentimiento dia 10~Defecto aceptado, arrepentimiento rechazado sin reembolso/stock~P33_arrepentimiento_con_uso_rechazado.png~
-P34~Visitor: KIT_TELETRABAJO~Detalle P01/P02/P03, peso total 1.00 kg~~logs/log-pruebas-automaticas.txt
-P35~Devolver pedido ENTREGADO por defecto y repetir la solicitud~USD 54.00 de reembolso sin flete, un solo reintegro, devolucion unica~P35_devolucion_ana.png|P35_repetida_rechazada.png|P35_inventario_reintegrado.png~
-P36~Dos cobros concurrentes sobre un SKU con una unidad~Maximo un cobro aprobado, stock no negativo, sin sobreventa~~logs/P36_concurrencia.txt
-P37~Outbox: falla el notificador y se reinicia el procesador~Evento pendiente se recupera, se marca procesado una vez y sin duplicar cobro~P37_outbox_fallido.png|P37_outbox_recuperado.png~logs/P37_outbox.txt
-P38~Pruebas LSP/ISP/DIP y build desde codigo limpio~Reemplazo de proveedor, contratos segregados, referencias correctas y 25 pruebas aprobadas~~logs/log-pruebas-automaticas.txt
+P15~Singleton: consultar metricas desde dos vistas~Misma instancia compartida, contadores observables y thread-safe~P15_metricas_coherentes.png|P15_P16_singleton_adapter.png~
+P16~Adapter: proveedor legado y alternativo~Cobros desde ambos con el mismo contrato, legado intacto~P15_P16_singleton_adapter.png~logs/log-pruebas-automaticas.txt
+P17~Bridge: dos comprobantes x dos medios~Cuatro combinaciones, VistaPrevia visible y TXT real~P17_venta_vista.png|P17_venta_txt.png|P17_devolucion_vista.png|P17_devolucion_txt.png|P17_bridge.png~
+P18~Composite: kits y composicion anidada, intentar ciclo~Precios 50/60, expansion correcta, ciclo rechazado~P18_P27_P34_catalogo.png~logs/log-pruebas-automaticas.txt
+P19~Decorator: cobro autorizado exitoso/fallido~LOG de inicio y fin/error rodea la ejecucion sin alterar el resultado~P19_decorator_logs.png~logs/P19_decorator.txt
+P20~Facade: confirmar con fallo en un colaborador~Operacion consistente, ninguna persistencia parcial indebida~P20_P36_consistencia_concurrencia.png~logs/log-pruebas-automaticas.txt
+P21~Flyweight: 1.000 filas con metadatos repetidos~ReferenceEquals true, identidad y memoria documentadas~P21_flyweight.png~logs/P21_flyweight.txt
+P22~Proxy: rol CONSULTA/BODEGA intenta pagar~Rechazo antes de Decorator/Adapter, sin cobro ni LOG de cobro~P22_menu_consulta.png|P22_botones_deshabilitados.png|P22_proxy_denegado.png~logs/P22_proxy.txt
+P23~Chain: pedido sin cliente y sin stock, corregir un error~Se informa la primera validacion y luego la siguiente, sin cobro~P23_cliente_inactivo_rechazado.png|P23_tras_corregir.png|P23_P24_chain_command.png~
+P24~Command: confirmar desde UI e invocador de prueba~Mismo comando y resultado funcional, historial de invocacion~P24_bitacora_comandos.png|P23_P24_chain_command.png~
+P25~Interpreter: ESTADO = PAGADO AND TOTAL >= 50~Devuelve unicamente pedidos que cumplen el filtro~P25_filtro.png|P25_P26_interpreter.png~
+P26~Interpreter: sintaxis erronea y parentesis~Error legible sin SQL concatenado, precedencia correcta~P26_error_sintaxis.png|P26_parentesis.png|P25_P26_interpreter.png~
+P27~Iterator: recorrer KIT_TELETRABAJO~P01, P02, P03 una vez por unidad requerida, sin bucle~P18_P27_P34_catalogo.png~logs/log-pruebas-automaticas.txt
+P28~Mediator: confirmar y revisar tres vistas~Catalogo, pedidos y metricas se refrescan sin acoplamiento directo~P28_mediator.png~logs/log-pruebas-automaticas.txt
+P29~Memento: tres ediciones, dos deshacer y un rehacer~Se restauran borradores completos, no se deshace un pago~P29_tras_deshacer.png|P29_tras_rehacer.png|P29_memento.png~
+P30~Observer: PedidoPagado con tres suscriptores~Notificacion, auditoria y metrica actualizadas una vez~P30_eventos_observer.png|P11_P12_P30_P37_outbox_fabricas.png~
+P31~State: ciclo valido y PAGADO a CANCELADO invalido~Transiciones con reglas por estado, sin escritura directa~P31_historial_pagado.png|P31_historial_entregado.png|P31_P32_estado_estrategia.png~
+P32~Strategy: VIP, MAYORISTA, NORMAL y nueva promocion~Descuentos 6/15/0, extension sin editar la calculadora central~P31_P32_estado_estrategia.png~logs/log-pruebas-automaticas.txt
+P33~Template Method: defecto dia 20, arrepentimiento dia 10~Defecto aceptado, arrepentimiento rechazado sin reembolso/stock~P33_arrepentimiento_con_uso_rechazado.png|P33_P35_devoluciones.png~
+P34~Visitor: KIT_TELETRABAJO~Detalle P01/P02/P03, peso total 1.00 kg~P18_P27_P34_catalogo.png~logs/log-pruebas-automaticas.txt
+P35~Devolver pedido ENTREGADO por defecto y repetir la solicitud~USD 54.00 de reembolso sin flete, un solo reintegro, devolucion unica~P35_devolucion_ana.png|P35_repetida_rechazada.png|P35_inventario_reintegrado.png|P33_P35_devoluciones.png~
+P36~Dos cobros concurrentes sobre un SKU con una unidad~Maximo un cobro aprobado, stock no negativo, sin sobreventa~P20_P36_consistencia_concurrencia.png~logs/P36_concurrencia.txt
+P37~Outbox: falla el notificador y se reinicia el procesador~Evento pendiente se recupera, se marca procesado una vez y sin duplicar cobro~P37_outbox_fallido.png|P37_outbox_recuperado.png|P11_P12_P30_P37_outbox_fabricas.png~logs/P37_outbox.txt
+P38~Pruebas LSP/ISP/DIP y build desde codigo limpio~Reemplazo de proveedor, contratos segregados, referencias correctas y 25 pruebas aprobadas~P38_arquitectura_SOLID.png~logs/log-pruebas-automaticas.txt
