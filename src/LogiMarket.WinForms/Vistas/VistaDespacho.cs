@@ -36,7 +36,7 @@ internal sealed class VistaDespacho : VistaBase
     public override async Task RefrescarAsync(CancellationToken ct = default)
     {
         var pedidos = await App.EjecutarAsync<ConsultasPedidos, IReadOnlyList<PedidoResumenDto>>(c => c.ListarAsync(ct));
-        Ui.Ui.Cargar(_grid, pedidos.Where(p => p.Estado is "Pagado" or "Despachado").ToList(), p => p.Id);
+        Ui.Ui.Cargar(_grid, pedidos.Where(p => p.Estado is EstadosPedidoTexto.Pagado or EstadosPedidoTexto.Despachado).ToList(), p => p.Id);
     }
 
     private async Task EjecutarAsync(bool despachar)

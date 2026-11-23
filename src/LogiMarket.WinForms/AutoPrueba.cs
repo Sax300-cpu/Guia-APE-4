@@ -218,7 +218,7 @@ internal static class AutoPrueba
                 // Pedidos: filtro por estado y detalle
                 await principal.MostrarAsync(TipoVista.Pedidos);
                 var pedidos = principal.Vistas.OfType<VistaPedidos>().Single();
-                Elegir(Hallar<ComboBox>(pedidos, "Filtrar por estado"), "Pagado");
+                Elegir(Hallar<ComboBox>(pedidos, "Filtrar por estado"), EstadosPedidoTexto.Pagado);
                 await Pausa(500);
                 Exigir(Hallar<DataGridView>(pedidos, "Pedidos").Rows.Count == 1, "El filtro Pagado debia mostrar 1 pedido");
                 Capturar(principal, carpeta, "06b_pedidos_filtrado.png");

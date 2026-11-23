@@ -56,11 +56,11 @@ internal sealed class VistaPanel : VistaBase
     {
         var pedidos = await App.EjecutarAsync<ConsultasPedidos, IReadOnlyList<PedidoResumenDto>>(c => c.ListarAsync(ct));
         var stock = await App.EjecutarAsync<ConsultasInventario, IReadOnlyList<StockDto>>(c => c.StockAsync(ct));
-        var cobrados = pedidos.Where(p => p.Estado is "Pagado" or "Despachado" or "Entregado").ToList();
+        var cobrados = pedidos.Where(p => p.Estado is EstadosPedidoTexto.Pagado or EstadosPedidoTexto.Despachado or EstadosPedidoTexto.Entregado).ToList();
 
         _total.Text = pedidos.Count.ToString();
         _pagados.Text = cobrados.Count.ToString();
-        _pendientes.Text = pedidos.Count(p => p.Estado == "Pagado").ToString();
+        _pendientes.Text = pedidos.Count(p => p.Estado == EstadosPedidoTexto.Pagado).ToString();
         _importe.Text = cobrados.Sum(p => p.Total).ToString("0.00");
         var m = App.Metricas;
         _metricas.Text = $"Indicadores de la sesion:  {m.PedidosPagados} pagados  |  {m.Despachos} despachos  |  {m.Devoluciones} devoluciones  |  {m.Rechazos} rechazos";

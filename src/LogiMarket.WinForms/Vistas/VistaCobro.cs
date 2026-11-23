@@ -61,7 +61,7 @@ internal sealed class VistaCobro : VistaBase
     {
         var pedidos = await App.EjecutarAsync<ConsultasPedidos, IReadOnlyList<PedidoResumenDto>>(c => c.ListarAsync(ct));
         _cargando = true;
-        _pedido.Cargar(pedidos.Where(p => p.Estado is "Borrador" or "Validado").Select(p => new Opcion<int>($"#{p.Id} {p.Cliente} - {p.Estado} - USD {p.Total:0.00}", p.Id)));
+        _pedido.Cargar(pedidos.Where(p => p.Estado is EstadosPedidoTexto.Borrador or EstadosPedidoTexto.Validado).Select(p => new Opcion<int>($"#{p.Id} {p.Cliente} - {p.Estado} - USD {p.Total:0.00}", p.Id)));
         _proveedor.SelectedItem = App.Demo.ProveedorPago;
         _cargando = false;
         await MostrarAsync();

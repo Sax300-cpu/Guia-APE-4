@@ -83,7 +83,7 @@ internal sealed class VistaCarrito : VistaBase
         var pedidos = await App.EjecutarAsync<ConsultasPedidos, IReadOnlyList<PedidoResumenDto>>(c => c.ListarAsync(ct));
         _cliente.Cargar(clientes.Where(c => c.Activo).Select(c => new Opcion<int>($"{c.Nombre} ({c.Categoria})", c.Id)));
         _producto.Cargar(catalogo.Select(f => new Opcion<string>($"{f.Sku} - {f.Nombre} (USD {f.Precio:0.00})", f.Sku)));
-        _borradores.Cargar(pedidos.Where(p => p.Estado == "Borrador").Select(p => new Opcion<int>($"#{p.Id} {p.Cliente} - USD {p.Total:0.00}", p.Id)));
+        _borradores.Cargar(pedidos.Where(p => p.Estado == EstadosPedidoTexto.Borrador).Select(p => new Opcion<int>($"#{p.Id} {p.Cliente} - USD {p.Total:0.00}", p.Id)));
         _cargando = false;
         if (_pedidoId != 0) await MostrarAsync(_pedidoId);
     }

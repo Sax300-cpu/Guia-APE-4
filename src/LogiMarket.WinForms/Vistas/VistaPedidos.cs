@@ -11,7 +11,7 @@ namespace LogiMarket.WinForms.Vistas;
 /// <summary>Pantalla 06 - Pedidos e historial: consulta de estados y trazabilidad de cambios.</summary>
 internal sealed class VistaPedidos : VistaBase
 {
-    private readonly ComboBox _estado = Ui.Ui.Combo("Filtrar por estado", 150, "(todos)", "Borrador", "Validado", "Pagado", "Despachado", "Entregado", "Cancelado");
+    private readonly ComboBox _estado = Ui.Ui.Combo("Filtrar por estado", 150, ["(todos)", .. EstadosPedidoTexto.Todos]);
     private readonly TextBox _cliente = Ui.Ui.Caja("Filtrar por cliente", 180);
     private readonly DataGridView _pedidos = Ui.Ui.Grid("Pedidos",
         new Col("N.", nameof(PedidoResumenDto.Id), 30), new Col("Cliente", nameof(PedidoResumenDto.Cliente), 90), new Col("Estado", nameof(PedidoResumenDto.Estado), 60),
