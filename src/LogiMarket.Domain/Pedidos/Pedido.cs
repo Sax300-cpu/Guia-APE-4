@@ -75,9 +75,14 @@ public sealed class Pedido : IPrototipo<Pedido>
 
     private Pedido() { }
 
+    /// <summary>Unica fuente del mensaje de la regla "un pedido tiene al menos una linea" (invariante del agregado).</summary>
+    public const string MensajeSinLineas = "El pedido requiere al menos una linea.";
+
     internal static Pedido Crear(Cliente cliente, ModalidadEntrega entrega, IEnumerable<PedidoDetalle> detalles,
         CalculadoraDescuento calculadora, DateTime ahora)
     {
+        var lineas = detalles.ToList();
+        if (lineas.Count == 0) throw new DomainException(MensajeSinLineas);
         var pedido = new Pedido
         {
             Cliente = cliente,
@@ -87,7 +92,7 @@ public sealed class Pedido : IPrototipo<Pedido>
             PlazoDias = entrega.PlazoDias,
             CreadoEn = ahora
         };
-        pedido._detalles.AddRange(detalles);
+        pedido._detalles.AddRange(lineas);
         pedido.Valorar(calculadora);
         pedido._historial.Add(new HistorialEstadoPedido(null, EstadoPedido.Borrador, ahora));
         return pedido;
@@ -111,8 +116,7 @@ public sealed class Pedido : IPrototipo<Pedido>
 
     public void Validar(DateTime ahora)
     {
-        if (_detalles.Count == 0) throw new DomainException("No se puede validar un pedido sin lineas.");
-        Transicionar(e => e.Validar(), ahora);
+        Transicionar(e => e.Validar(), ahora); // la invariante de lineas la garantiza Crear
     }
 
     public void MarcarPagado(string claveIdempotencia, DateTime ahora)

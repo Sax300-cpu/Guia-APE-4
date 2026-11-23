@@ -30,7 +30,6 @@ public sealed class PedidoBuilder
         if (_cliente is null) throw new DomainException("El pedido requiere un cliente.");
         if (!_cliente.Activo) throw new DomainException("El cliente esta inactivo.");
         if (_entrega is null) throw new DomainException("El pedido requiere una modalidad de entrega.");
-        if (_lineas.Count == 0) throw new DomainException("El pedido requiere al menos una linea.");
         return Pedido.Crear(_cliente, _entrega, _lineas.ToList(), _calculadora, ahora);
     }
 }

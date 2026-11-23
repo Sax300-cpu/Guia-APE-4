@@ -49,9 +49,9 @@ public sealed class EslabonLineasYCantidades : EslabonValidacion
     public const string Nombre = "LineasYCantidades";
 
     protected override ResultadoValidacion Comprobar(ContextoValidacion c) =>
-        c.Pedido.Detalles.Count > 0 && c.Pedido.Detalles.All(d => d.Cantidad > 0)
+        c.Pedido.Detalles.Count > 0
             ? ResultadoValidacion.Ok
-            : ResultadoValidacion.Falla(Nombre, "El pedido necesita al menos una linea con cantidad positiva.");
+            : ResultadoValidacion.Falla(Nombre, Pedido.MensajeSinLineas);
 }
 
 public sealed class EslabonStock : EslabonValidacion
