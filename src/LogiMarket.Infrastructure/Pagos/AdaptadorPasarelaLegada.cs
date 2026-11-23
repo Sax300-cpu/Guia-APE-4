@@ -7,7 +7,7 @@ namespace LogiMarket.Infrastructure.Pagos;
 /// <summary>Adapter: expone la pasarela legada (CobrarCentavos) como IPasarelaPago.CobrarAsync.</summary>
 public sealed class AdaptadorPasarelaLegada(PasarelaLegadaSimulada legado, IBitacoraOperaciones bitacora) : IPasarelaPago
 {
-    public string Proveedor => "LEGADA";
+    public string Proveedor => Application.Demo.ProveedoresPago.Legada;
 
     public Task<ResultadoCobro> CobrarAsync(decimal monto, string claveIdempotencia, CancellationToken ct = default)
     {

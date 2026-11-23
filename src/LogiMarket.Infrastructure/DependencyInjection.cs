@@ -41,7 +41,7 @@ public static class DependencyInjection
         // Orden obligatorio: Proxy (autoriza) -> Decorator (bitacora) -> proveedor (Adapter o simulado).
         services.AddScoped<IPasarelaPago>(sp =>
         {
-            IPasarelaPago proveedor = sp.GetRequiredService<ConfiguracionDemo>().ProveedorPago == "LEGADA"
+            IPasarelaPago proveedor = sp.GetRequiredService<ConfiguracionDemo>().ProveedorPago == ProveedoresPago.Legada
                 ? sp.GetRequiredService<AdaptadorPasarelaLegada>()
                 : sp.GetRequiredService<PasarelaSimulada>();
             return new PagoAutorizadoProxy(sp.GetRequiredService<IAutorizador>(),

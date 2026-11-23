@@ -1,3 +1,4 @@
+using LogiMarket.Application.Demo;
 using LogiMarket.Application.Comandos;
 using LogiMarket.Application.Consultas;
 using LogiMarket.Application.Coordinacion;
@@ -12,7 +13,7 @@ namespace LogiMarket.WinForms.Vistas;
 /// <summary>Pantalla 07 - Confirmacion y cobro: importes, proveedor y cobro protegido con clave de idempotencia.</summary>
 internal sealed class VistaCobro : VistaBase
 {
-    private readonly ComboBox _pedido = Ui.Ui.Combo("Pedido a cobrar", 320), _proveedor = Ui.Ui.Combo("Proveedor de cobro", 140, "SIMULADA", "LEGADA");
+    private readonly ComboBox _pedido = Ui.Ui.Combo("Pedido a cobrar", 320), _proveedor = Ui.Ui.Combo("Proveedor de cobro", 140, ProveedoresPago.Todos);
     private readonly TextBox _clave = Ui.Ui.Caja("Clave de idempotencia", 300);
     private readonly Label _subtotal = new() { AutoSize = true }, _descuento = new() { AutoSize = true }, _tarifa = new() { AutoSize = true },
         _total = new() { AutoSize = true, Font = Estilo.Cifra, ForeColor = Estilo.Principal }, _estado = new() { AutoSize = true, Font = Estilo.Negrita };

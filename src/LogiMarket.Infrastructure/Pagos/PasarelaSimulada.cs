@@ -7,7 +7,7 @@ namespace LogiMarket.Infrastructure.Pagos;
 /// <summary>Cobro simulado: colaborador real que aprueba o rechaza segun la configuracion de demostracion.</summary>
 internal sealed class PasarelaSimulada(ConfiguracionDemo demo, IBitacoraOperaciones bitacora) : IPasarelaPago
 {
-    public string Proveedor => "SIMULADA";
+    public string Proveedor => Application.Demo.ProveedoresPago.Simulada;
 
     public Task<ResultadoCobro> CobrarAsync(decimal monto, string claveIdempotencia, CancellationToken ct = default)
     {

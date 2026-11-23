@@ -1,3 +1,4 @@
+using LogiMarket.Application.Demo;
 using LogiMarket.Application.Consultas;
 using LogiMarket.Application.Coordinacion;
 using LogiMarket.Application.Eventos;
@@ -17,7 +18,7 @@ internal sealed class VistaAuditoria : VistaBase
         new Col("Accion", nameof(AuditoriaDto.Accion), 90), new Col("Detalle", nameof(AuditoriaDto.Detalle), 160));
     private readonly Label _metricas = new() { AutoSize = true, Font = new Font("Segoe UI Semibold", 12f) };
     private readonly Label _outbox = new() { AutoSize = true, Font = Estilo.Negrita };
-    private readonly ComboBox _proveedor = Ui.Ui.Combo("Proveedor de cobro simulado", 150, "SIMULADA", "LEGADA"), _canal = Ui.Ui.Combo("Canal de notificacion", 120, "EMAIL", "SMS");
+    private readonly ComboBox _proveedor = Ui.Ui.Combo("Proveedor de cobro simulado", 150, ProveedoresPago.Todos), _canal = Ui.Ui.Combo("Canal de notificacion", 120, CanalesNotificacion.Todos);
     private readonly CheckBox _fallaCobro = Ui.Ui.Casilla("Inducir fallo del cobro", "Inducir fallo del cobro"),
         _fallaNotificador = Ui.Ui.Casilla("Inducir fallo del notificador (el evento queda pendiente en el Outbox)", "Inducir fallo del notificador");
     private readonly Label _resultado = Ui.Ui.Mensaje("Resultado de la demostracion");

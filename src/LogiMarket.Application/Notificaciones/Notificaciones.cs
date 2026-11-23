@@ -36,23 +36,23 @@ internal abstract class NotificadorSimulado(IRepositorioAuditoria auditoria, ICl
 
 internal sealed class NotificadorEmail(IRepositorioAuditoria a, IClock r, ConfiguracionDemo d) : NotificadorSimulado(a, r, d)
 {
-    public override string Canal => "EMAIL";
+    public override string Canal => Demo.CanalesNotificacion.Email;
 }
 
 internal sealed class NotificadorSms(IRepositorioAuditoria a, IClock r, ConfiguracionDemo d) : NotificadorSimulado(a, r, d)
 {
-    public override string Canal => "SMS";
+    public override string Canal => Demo.CanalesNotificacion.Sms;
 }
 
 public sealed class CreadorEmail(IRepositorioAuditoria a, IClock r, ConfiguracionDemo d) : CreadorNotificador
 {
-    public override string Canal => "EMAIL";
+    public override string Canal => Demo.CanalesNotificacion.Email;
     protected override INotificador CrearNotificador() => new NotificadorEmail(a, r, d);
 }
 
 public sealed class CreadorSms(IRepositorioAuditoria a, IClock r, ConfiguracionDemo d) : CreadorNotificador
 {
-    public override string Canal => "SMS";
+    public override string Canal => Demo.CanalesNotificacion.Sms;
     protected override INotificador CrearNotificador() => new NotificadorSms(a, r, d);
 }
 
