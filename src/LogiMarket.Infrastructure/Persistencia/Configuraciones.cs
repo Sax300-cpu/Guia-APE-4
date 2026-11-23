@@ -127,7 +127,7 @@ internal sealed class PagoConfig : IEntityTypeConfiguration<Pago>
         b.HasIndex(p => p.Referencia).IsUnique();
         b.HasIndex(p => p.ClaveIdempotencia).IsUnique();
         // Maximo un pago aprobado por pedido.
-        b.HasIndex(p => p.PedidoId).IsUnique().HasFilter("Estado = 'Aprobado'");
+        b.HasIndex(p => p.PedidoId).IsUnique().HasFilter($"Estado = '{nameof(EstadoPago.Aprobado)}'");
     }
 }
 
