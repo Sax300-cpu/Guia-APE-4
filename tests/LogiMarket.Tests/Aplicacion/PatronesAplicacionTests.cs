@@ -138,6 +138,21 @@ public class PatronesAplicacionTests(Xunit.Abstractions.ITestOutputHelper salida
         Assert.NotNull((await reiniciada.Obtener<LogiMarketDbContext>().Outbox.SingleAsync()).ProcesadoEn);
     }
 
+    [Fact] // Outbox: ningun evento de negocio queda sin poder reconstruirse
+    public void Serializador_reconoce_todos_los_eventos_de_negocio()
+    {
+        var eventos = new IEventoNegocio[] { new PedidoPagado(1, "Ana", 59m), new DespachoRegistrado(1, "STD-1"), new DevolucionAceptada(1, 54m) };
+        var implementados = typeof(IEventoNegocio).Assembly.GetTypes().Count(t => t is { IsClass: true, IsAbstract: false } && typeof(IEventoNegocio).IsAssignableFrom(t));
+
+        foreach (var evento in eventos)
+        {
+            var (tipo, payload) = SerializadorEventos.Serializar(evento);
+            Assert.Equal(evento, SerializadorEventos.Deserializar(tipo, payload));
+        }
+        Assert.Equal(eventos.Length, implementados);
+        Assert.Throws<InvalidOperationException>(() => SerializadorEventos.Deserializar("Inexistente", "{}"));
+    }
+
     [Fact] // P35 + Template Method (variante DEFECTO)
     public async Task P35_Devolucion_de_Ana_reembolsa_54_una_sola_vez_y_reintegra_stock_una_vez()
     {

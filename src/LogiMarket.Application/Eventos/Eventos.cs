@@ -12,10 +12,10 @@ public sealed record DevolucionAceptada(int PedidoId, decimal Reembolso) : IEven
 
 public static class SerializadorEventos
 {
-    private static readonly IReadOnlyDictionary<string, Type> Tipos = new[]
-    {
-        typeof(PedidoPagado), typeof(DespachoRegistrado), typeof(DevolucionAceptada)
-    }.ToDictionary(t => t.Name);
+    // Los tipos de evento se descubren por la interfaz marcadora: un evento nuevo no exige editar este serializador.
+    private static readonly IReadOnlyDictionary<string, Type> Tipos = typeof(IEventoNegocio).Assembly.GetTypes()
+        .Where(t => t is { IsClass: true, IsAbstract: false } && typeof(IEventoNegocio).IsAssignableFrom(t))
+        .ToDictionary(t => t.Name);
 
     public static (string Tipo, string Payload) Serializar(IEventoNegocio evento) =>
         (evento.GetType().Name, JsonSerializer.Serialize(evento, evento.GetType()));
