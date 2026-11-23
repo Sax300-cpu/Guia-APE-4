@@ -5,14 +5,16 @@ namespace LogiMarket.Tests.Aplicacion;
 
 internal static class Escenarios
 {
-    /// <summary>Ana compra KIT_TELETRABAJO x1 (59.00) con el rol VENTAS.</summary>
-    public static async Task<int> PagarAnaAsync(Entorno e, string clave = "k-ana")
+    /// <summary>El cliente compra KIT_TELETRABAJO x1 con el rol VENTAS (Ana: 59.00).</summary>
+    public static async Task<int> PagarAsync(Entorno e, string cliente = "Ana", string clave = "k-ana")
     {
         await e.IniciarSesionAsync("ventas");
-        var id = await e.CrearPedidoAsync("Ana", TipoEntrega.Estandar, ("KIT_TELETRABAJO", 1));
+        var id = await e.CrearPedidoAsync(cliente, TipoEntrega.Estandar, ("KIT_TELETRABAJO", 1));
         Assert.True((await e.Obtener<ConfirmacionPedidoFacade>().ConfirmarAsync(id, clave)).Exito);
         return id;
     }
+
+    public static Task<int> PagarAnaAsync(Entorno e, string clave = "k-ana") => PagarAsync(e, "Ana", clave);
 
     public static async Task<int> EntregarAnaAsync(Entorno e)
     {

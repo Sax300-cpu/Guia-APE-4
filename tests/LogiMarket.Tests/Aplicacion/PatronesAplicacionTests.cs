@@ -19,24 +19,6 @@ namespace LogiMarket.Tests.Aplicacion;
 
 public class PatronesAplicacionTests(Xunit.Abstractions.ITestOutputHelper salida)
 {
-    private static async Task<int> PagarAsync(Entorno e, string cliente = "Ana", string clave = "k-1")
-    {
-        await e.IniciarSesionAsync("ventas");
-        var id = await e.CrearPedidoAsync(cliente, TipoEntrega.Estandar, ("KIT_TELETRABAJO", 1));
-        Assert.True((await e.Obtener<ConfirmacionPedidoFacade>().ConfirmarAsync(id, clave)).Exito);
-        return id;
-    }
-
-    private static async Task<int> EntregarAsync(Entorno e)
-    {
-        var id = await PagarAsync(e);
-        await e.IniciarSesionAsync("bodega");
-        Assert.True((await e.Obtener<ServicioDespacho>().DespacharAsync(id)).Exito);
-        Assert.True((await e.Obtener<ServicioDespacho>().EntregarAsync(id)).Exito);
-        await e.IniciarSesionAsync("ventas");
-        return id;
-    }
-
     private static Task<int> ContarAuditoriaAsync(Entorno e, string accion) =>
         e.Obtener<LogiMarketDbContext>().Auditoria.CountAsync(a => a.Accion == accion);
 
@@ -87,7 +69,7 @@ public class PatronesAplicacionTests(Xunit.Abstractions.ITestOutputHelper salida
     public async Task P30_Outbox_notifica_a_tres_suscriptores_una_sola_vez()
     {
         using var e = await Entorno.CrearAsync();
-        await PagarAsync(e);
+        await Escenarios.PagarAsync(e);
 
         Assert.Equal(1, await e.Obtener<ProcesadorOutbox>().ProcesarPendientesAsync());
         Assert.Equal(0, await e.Obtener<ProcesadorOutbox>().ProcesarPendientesAsync()); // sin duplicar
@@ -101,7 +83,7 @@ public class PatronesAplicacionTests(Xunit.Abstractions.ITestOutputHelper salida
     public async Task P11_Factory_Method_cambia_de_EMAIL_a_SMS_sin_tocar_el_consumidor()
     {
         using var e = await Entorno.CrearAsync();
-        await PagarAsync(e);
+        await Escenarios.PagarAsync(e);
         e.Obtener<ConfiguracionNotificacion>().Canal = "SMS";
 
         await e.Obtener<ProcesadorOutbox>().ProcesarPendientesAsync();
@@ -114,7 +96,7 @@ public class PatronesAplicacionTests(Xunit.Abstractions.ITestOutputHelper salida
     public async Task P37_Evento_fallido_queda_pendiente_y_se_procesa_una_vez_tras_reiniciar()
     {
         using var e = await Entorno.CrearAsync();
-        await PagarAsync(e);
+        await Escenarios.PagarAsync(e);
         e.Obtener<ConfiguracionDemo>().FallarNotificador = true;
 
         Assert.Equal(0, await e.Obtener<ProcesadorOutbox>().ProcesarPendientesAsync());
@@ -157,7 +139,7 @@ public class PatronesAplicacionTests(Xunit.Abstractions.ITestOutputHelper salida
     public async Task P35_Devolucion_de_Ana_reembolsa_54_una_sola_vez_y_reintegra_stock_una_vez()
     {
         using var e = await Entorno.CrearAsync();
-        var id = await EntregarAsync(e);
+        var id = await Escenarios.EntregarAnaAsync(e);
         var servicio = e.Obtener<ServicioDevoluciones>();
 
         var primera = await servicio.SolicitarAsync(new SolicitudDevolucion(id, MotivoDevolucion.Defecto, false));
@@ -178,12 +160,12 @@ public class PatronesAplicacionTests(Xunit.Abstractions.ITestOutputHelper salida
     public async Task P33_Defecto_dia_20_se_acepta_y_arrepentimiento_dia_10_se_rechaza_sin_efectos()
     {
         using var aceptada = await Entorno.CrearAsync();
-        var id1 = await EntregarAsync(aceptada);
+        var id1 = await Escenarios.EntregarAnaAsync(aceptada);
         aceptada.Reloj.UtcAhora = aceptada.Reloj.UtcAhora.AddDays(20);
         Assert.True((await aceptada.Obtener<ServicioDevoluciones>().SolicitarAsync(new(id1, MotivoDevolucion.Defecto, false))).Exito);
 
         using var rechazada = await Entorno.CrearAsync();
-        var id2 = await EntregarAsync(rechazada);
+        var id2 = await Escenarios.EntregarAnaAsync(rechazada);
         rechazada.Reloj.UtcAhora = rechazada.Reloj.UtcAhora.AddDays(10);
         var r = await rechazada.Obtener<ServicioDevoluciones>().SolicitarAsync(new(id2, MotivoDevolucion.Arrepentimiento, true));
 
@@ -198,7 +180,7 @@ public class PatronesAplicacionTests(Xunit.Abstractions.ITestOutputHelper salida
     public async Task Arrepentimiento_con_producto_usado_se_rechaza_aunque_este_en_plazo()
     {
         using var e = await Entorno.CrearAsync();
-        var id = await EntregarAsync(e);
+        var id = await Escenarios.EntregarAnaAsync(e);
         var r = await e.Obtener<ServicioDevoluciones>().SolicitarAsync(new(id, MotivoDevolucion.Arrepentimiento, SinUso: false));
         Assert.Equal("CONDICION_NO_CUMPLIDA", r.Codigo);
         Assert.Equal(7, (await e.StockAsync())["P01"]);
