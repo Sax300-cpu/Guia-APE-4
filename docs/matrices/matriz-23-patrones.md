@@ -1,6 +1,6 @@
 # Matriz de 23 patrones GoF
 
-Generada por `tools/generar-matriz-pruebas.ps1` (datos en `tools/patrones.csv`). El resultado de la prueba sale del TRX; las rutas apuntan a los participantes reales del codigo. Suite: **107 de 107 superadas**.
+Generada por `tools/generar-matriz-pruebas.ps1` (datos en `tools/patrones.csv`). El resultado de la prueba sale del TRX; las rutas apuntan a los participantes reales del codigo. Suite: **108 de 108 superadas**.
 
 | N | Tipo | Patron | Problema que resuelve | Participantes reales | Proyecto / archivo | Prueba (caso) | Resultado | Captura |
 |---|---|---|---|---|---|---|---|---|

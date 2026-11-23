@@ -1,21 +1,42 @@
-# Riesgos de diseno detectados, verificados y su tratamiento
+# Riesgos de diseno detectados, verificados y refactorizados (Actividad 7)
 
-Cada fila nace de una verificacion en el codigo (`grep`, lectura o ejecucion), no de una suposicion.
-Estado: **Corregido** (commit propio con pruebas antes/despues), **Corregido antes de commitear** (detectado durante el desarrollo; no existe commit "antes", y se declara asi) o **Aceptado** (se mantiene con justificacion).
+Cada riesgo se verifico en el codigo (`grep`, lectura o ejecucion) antes de tocarlo. Cada refactor tiene su propio commit y se comprobo la suite **antes** (linea base de 107 pruebas en verde) y **despues** (compilacion con 0 advertencias, pruebas en verde y `dotnet format --verify-no-changes`).
 
-| # | Riesgo (verificado) | Evidencia de la verificacion | Estado | Tratamiento |
-|---|---|---|---|---|
-| 1 | `CambiarCantidad` duplicado: `ServicioPedidos` lo editaba sin registrar el historial del Memento, por lo que un cambio por esa via no se podia deshacer | `grep CambiarCantidadAsync`: dos servicios; solo una prueba (P08) usaba el duplicado | Corregido | Commit `ed4e955`: se elimina el duplicado y P08 usa `ServicioEdicionBorrador`. 107/107 antes y despues |
-| 2 | Cadenas magicas `"SIMULADA"`, `"LEGADA"`, `"EMAIL"`, `"SMS"` repetidas en Application, Infrastructure y WinForms | `grep` de los literales: 11 apariciones en 3 capas | Corregido | Commit `f3456e3`: constantes `ProveedoresPago` y `CanalesNotificacion`. Pruebas y autoprueba de la UI en verde |
-| 3 | Filtro del indice unico de pago aprobado escrito a mano (`'Aprobado'`), acoplado al nombre del enum | Lectura de `Configuraciones.cs` | Corregido | Commit `ed9e2e7`: `nameof(EstadoPago.Aprobado)`. `dotnet ef migrations has-pending-model-changes`: sin cambios de modelo |
-| 4 | `dotnet format --verify-no-changes` fallaba: orden de `using` y codificacion de la migracion generada | Ejecucion del comando | Corregido | Commit `6cb7cfb`: formato aplicado y codigo generado excluido en `.editorconfig`; la verificacion pasa |
-| 5 | Combo de borradores desactualizado tras cancelar un pedido | Observado en la interfaz durante la Fase 7 | Corregido antes de commitear | `RefrescarAsync` tras cada operacion en las vistas |
-| 6 | Pantallas sin desregistrar del Mediator si la ventana se descarta sin `Close` | Revision del ciclo de vida de `FormPrincipal` | Corregido antes de commitear | `FormPrincipal.Dispose` libera las vistas |
-| 7 | Decimales con coma y punto mezclados en la interfaz | Observado al capturar importes | Corregido antes de commitear | Cultura propia es-EC con separador decimal punto |
-| 8 | `GroupBox` autoajustable recortaba botones | Observado en la interfaz | Corregido antes de commitear | Altura fija en `Ui.Grupo` |
-| 9 | `EliminarAsync` lanzaba una excepcion de EF sin traducir al borrar un producto con movimientos | Fallo real al ejecutar la prueba | Corregido antes de commitear | Comprobacion previa `ExistenMovimientosAsync` y mensaje de dominio |
-| 10 | `ObservadorMetricas` y `ObservadorNotificacion` hacen `switch` por tipo de evento: un evento nuevo obliga a editar ambos, y el de metricas ignora en silencio los desconocidos | Lectura de `Notificaciones.cs` | Aceptado | Hay solo tres eventos y las plantillas dependen de cada uno. Cambiarlo exige ampliar `IEventoNegocio`; se evita el sobrediseno. Queda como mejora futura |
-| 11 | `ConfirmacionPedidoFacade` recibe 10 dependencias por constructor | Lectura del constructor | Aceptado | Es una fachada: sus colaboradores son su razon de ser. Se mantiene la orquestacion en un solo lugar |
-| 12 | `PedidoResumenDto.Estado` es `string` | Lectura de `ServiciosGestion.cs` | Aceptado | Es un DTO de presentacion; evita exponer el dominio a la interfaz |
+## A. Diez refactores con commit propio
 
-Fallos reales detectados y reparados durante el desarrollo, sin commit "antes" separado: excepcion nula en `ObtenerPorSkuAsync` con un grafo parcial de kits (corregido cargando el catalogo completo) y `YA_DEVUELTO` evaluado tarde en la plantilla de devolucion (P35 devolvia `NO_ELEGIBLE`).
+| # | Tipo de riesgo | Riesgo verificado | Evidencia de verificacion | Commit | Pruebas antes -> despues |
+|---|---|---|---|---|---|
+| 1 | Duplicacion / comportamiento inconsistente | `CambiarCantidad` existia en `ServicioPedidos` y en `ServicioEdicionBorrador`; la copia de `ServicioPedidos` no registraba el historial del Memento, asi que ese cambio no se podia deshacer | `grep CambiarCantidadAsync`: dos servicios; solo la prueba P08 usaba el duplicado | `ed4e955` | 107 -> 107 |
+| 2 | Cadenas magicas / acoplamiento entre capas | `"SIMULADA"`, `"LEGADA"`, `"EMAIL"`, `"SMS"` repetidas en Application, Infrastructure y WinForms (11 apariciones) | `grep` de los literales | `f3456e3` | 107 -> 107 (+ autoprueba de la UI) |
+| 3 | Estado primitivo acoplado al esquema | El filtro del indice unico de pago aprobado usaba `'Aprobado'` escrito a mano | Lectura de `Configuraciones.cs`; `dotnet ef migrations has-pending-model-changes` sin cambios | `ed9e2e7` | 107 -> 107 |
+| 4 | Duplicacion de invariantes | La regla "cantidad > 0" estaba copiada en 6 sitios del dominio con mensajes distintos | `grep "cantidad <= 0"`: 6 coincidencias | `dfcc269` | 107 -> 107 |
+| 5 | Cadenas magicas | 12 codigos de rechazo (`NO_ENCONTRADO`, `ESTADO_INVALIDO`, ...) y el mensaje "El pedido no existe." repetidos en 5 servicios; `NO_ENCONTRADO` en 7 sitios | `grep` de los codigos | `8336379` | 107 -> 107 |
+| 6 | Validaciones dispersas / duplicacion | Facade y `ServicioPedidos.ValidarAsync` repetian la carga del catalogo, el diccionario de productos y la construccion del contexto de la cadena. Efecto lateral: el Facade deja de depender del repositorio de catalogo | Lectura de ambos metodos (lineas casi identicas) | `7bcc5e3` | 107 -> 107 |
+| 7 | Extensibilidad (OCP) | `SerializadorEventos` mantenia una lista manual de tipos: un evento nuevo podia olvidarse y fallar al reintentar el Outbox | Lectura de `Eventos.cs` | `d8d1642` | 107 -> 108 (nueva prueba de ida y vuelta de todos los eventos) |
+| 8 | Estados primitivos | 8 comparaciones de estado de pedido por texto (`"Borrador"`, `"Pagado"`...) repartidas por las vistas | `grep` de los literales en WinForms | `0fa493c` | 108 -> 108 (+ autoprueba de la UI) |
+| 9 | Validaciones dispersas | La regla "al menos una linea" estaba en tres capas (Builder, `Pedido.Validar`, eslabon de la cadena) con tres mensajes; el comprobante `Cantidad > 0` del eslabon era inalcanzable por la guardia de `PedidoDetalle` | Lectura de las tres comprobaciones y de `Restaurar`: un pedido no puede quedar sin lineas | `80baeab` | 108 -> 108 |
+| 10 | Duplicacion en pruebas | `PagarAsync`/`EntregarAsync` de `PatronesAplicacionTests` eran copias de `Escenarios` | Comparacion de los cuerpos | `21b9e89` | 108 -> 108 |
+
+Calidad adicional: `dotnet format --verify-no-changes` fallaba (orden de `using` y codificacion de la migracion generada); commit `6cb7cfb` aplica el formato y excluye el codigo generado.
+
+## B. Otros riesgos corregidos durante la Fase 7 (sin commit "antes" separado)
+
+Se detectaron y repararon antes de commitear; se declara asi para no aparentar un historial que no existe.
+
+| Riesgo | Tratamiento |
+|---|---|
+| Combo de borradores desactualizado tras cancelar un pedido | `RefrescarAsync` tras cada operacion |
+| Pantallas sin desregistrar del Mediator si la ventana se descarta sin `Close` | `FormPrincipal.Dispose` libera las vistas |
+| Decimales con coma y punto mezclados | Cultura es-EC con separador decimal punto |
+| `GroupBox` autoajustable recortaba botones | Altura fija en `Ui.Grupo` |
+| `EliminarAsync` lanzaba una excepcion de EF sin traducir | Comprobacion previa `ExistenMovimientosAsync` |
+| Excepcion nula en `ObtenerPorSkuAsync` con grafo parcial de kits | Carga del catalogo completo y filtrado |
+| `YA_DEVUELTO` evaluado tarde en la plantilla de devolucion (P35 devolvia `NO_ELEGIBLE`) | Comprobacion al inicio de la plantilla |
+
+## C. Riesgos aceptados (con justificacion)
+
+| Riesgo | Justificacion |
+|---|---|
+| `ObservadorMetricas` y `ObservadorNotificacion` hacen `switch` por tipo de evento | Solo hay tres eventos y cada plantilla depende de su tipo; abstraerlo exige ampliar `IEventoNegocio` y seria sobrediseno |
+| `ConfirmacionPedidoFacade` recibe 10 colaboradores | Es una fachada: orquestar colaboradores es su funcion |
+| `PedidoResumenDto.Estado` es `string` | Es un DTO de presentacion; ahora sus valores salen de `EstadosPedidoTexto` (refactor 8) |
