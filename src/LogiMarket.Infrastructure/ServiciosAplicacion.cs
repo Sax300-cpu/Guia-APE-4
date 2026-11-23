@@ -11,6 +11,7 @@ using LogiMarket.Application.Pedidos;
 using LogiMarket.Application.Puertos;
 using LogiMarket.Application.Seguridad;
 using LogiMarket.Application.Servicios;
+using LogiMarket.Application.Validacion;
 using LogiMarket.Domain.Politicas;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -39,6 +40,7 @@ public static class ServiciosAplicacion
         services.AddScoped<ServicioComprobantes>();
         services.AddScoped<IAutorizador, Autorizador>();
         services.AddScoped<ServicioAutenticacion>();
+        services.AddScoped<ValidadorPedido>();
         services.AddScoped<ServicioPedidos>();
         services.AddScoped<ServicioClientes>();
         services.AddScoped<ServicioCatalogo>();

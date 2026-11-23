@@ -12,7 +12,7 @@ namespace LogiMarket.Application.Servicios;
 public sealed record LineaSolicitada(string Sku, int Cantidad);
 
 public sealed class ServicioPedidos(IRepositorioPedidos pedidos, IRepositorioClientes clientes, IRepositorioCatalogo catalogo,
-    ServicioEntrega entrega, CalculadoraDescuento calculadora, IAutorizador autorizador, IUnitOfWork uow, IClock reloj)
+    ServicioEntrega entrega, ValidadorPedido validador, CalculadoraDescuento calculadora, IAutorizador autorizador, IUnitOfWork uow, IClock reloj)
 {
     public async Task<int> CrearBorradorAsync(int clienteId, TipoEntrega tipo, IReadOnlyList<LineaSolicitada> lineas, CancellationToken ct = default)
     {
@@ -53,8 +53,7 @@ public sealed class ServicioPedidos(IRepositorioPedidos pedidos, IRepositorioCli
         await autorizador.ExigirAsync(Permiso.GestionarPedidos, ct);
         var pedido = await pedidos.ObtenerPorIdAsync(pedidoId, ct);
         if (pedido is null) return ResultadoOperacion.Rechazo(CodigosResultado.NoEncontrado, CodigosResultado.MensajePedidoInexistente);
-        var productos = (await catalogo.ObtenerTodosAsync(ct)).OfType<Domain.Catalogo.ProductoSimple>().ToDictionary(p => p.Sku);
-        var resultado = PipelineValidacion.Crear().Validar(new ContextoValidacion(pedido, productos, autorizador.Tiene(Permiso.GestionarPedidos)));
+        var resultado = (await validador.ValidarAsync(pedido, Permiso.GestionarPedidos, ct)).Resultado;
         if (!resultado.Valido) return ResultadoOperacion.Rechazo(resultado.Eslabon!, resultado.Mensaje!);
         try
         {

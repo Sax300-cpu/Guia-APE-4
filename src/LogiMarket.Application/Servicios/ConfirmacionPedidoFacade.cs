@@ -20,7 +20,7 @@ public sealed record ResultadoConfirmacion(bool Exito, string Codigo, string Men
 /// Facade: una sola operacion para confirmar un pedido. Coordina autorizacion, idempotencia, validacion, cobro,
 /// stock, persistencia y Outbox. No contiene SQL ni reglas de descuento: delega en sus colaboradores.
 /// </summary>
-public sealed class ConfirmacionPedidoFacade(IAutorizador autorizador, IRepositorioPedidos pedidos, IRepositorioCatalogo catalogo,
+public sealed class ConfirmacionPedidoFacade(IAutorizador autorizador, IRepositorioPedidos pedidos, ValidadorPedido validador,
     IRepositorioPagos pagos, IRepositorioInventario inventario, IRepositorioOutbox outbox, IPasarelaPago pasarela,
     IUnitOfWork uow, IClock reloj, RegistroHistorialesBorrador historiales)
 {
@@ -36,8 +36,7 @@ public sealed class ConfirmacionPedidoFacade(IAutorizador autorizador, IReposito
         var previo = await pagos.ObtenerPorClaveAsync(claveIdempotencia, ct);
         if (previo is not null) return ResultadoOriginal(previo, pedido);
 
-        var productos = (await catalogo.ObtenerTodosAsync(ct)).OfType<ProductoSimple>().ToDictionary(p => p.Sku);
-        var validacion = PipelineValidacion.Crear().Validar(new ContextoValidacion(pedido, productos, autorizador.Tiene(Permiso.CobrarPedido)));
+        var (validacion, productos) = await validador.ValidarAsync(pedido, Permiso.CobrarPedido, ct);
         if (!validacion.Valido)
             return Rechazo(pedidoId, pedido.Total, CodigosResultado.Validacion, validacion.Mensaje!, validacion.Eslabon);
 

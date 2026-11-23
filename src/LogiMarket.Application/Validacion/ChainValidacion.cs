@@ -1,4 +1,6 @@
 using LogiMarket.Application.Pedidos;
+using LogiMarket.Application.Puertos;
+using LogiMarket.Application.Seguridad;
 using LogiMarket.Domain.Catalogo;
 using LogiMarket.Domain.Pedidos;
 
@@ -92,5 +94,18 @@ public static class PipelineValidacion
                .Encadenar(new EslabonStock())
                .Encadenar(new EslabonCondicionesConfirmacion());
         return primero;
+    }
+}
+
+public sealed record ValidacionPedido(ResultadoValidacion Resultado, IReadOnlyDictionary<string, ProductoSimple> Productos);
+
+/// <summary>Carga el catalogo vigente y recorre la cadena de validacion: unico punto de entrada para validar y para cobrar.</summary>
+public sealed class ValidadorPedido(IRepositorioCatalogo catalogo, IAutorizador autorizador)
+{
+    public async Task<ValidacionPedido> ValidarAsync(Pedido pedido, Permiso permiso, CancellationToken ct)
+    {
+        var productos = (await catalogo.ObtenerTodosAsync(ct)).OfType<ProductoSimple>().ToDictionary(p => p.Sku);
+        var resultado = PipelineValidacion.Crear().Validar(new ContextoValidacion(pedido, productos, autorizador.Tiene(permiso)));
+        return new ValidacionPedido(resultado, productos);
     }
 }
