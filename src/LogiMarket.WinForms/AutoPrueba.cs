@@ -1,8 +1,8 @@
 using System.Drawing.Imaging;
 using System.Text;
 using LogiMarket.Application.Comprobantes;
-using LogiMarket.Application.Coordinacion;
 using LogiMarket.Application.Consultas;
+using LogiMarket.Application.Coordinacion;
 using LogiMarket.Application.Eventos;
 using LogiMarket.Application.Seguridad;
 using LogiMarket.Application.Servicios;
@@ -119,9 +119,17 @@ internal static class AutoPrueba
             Exigir(principal.Vistas.Count == esperado["admin"], "ADMIN debia ver las 11 pantallas internas");
             var nombres = new Dictionary<TipoVista, string>
             {
-                [TipoVista.Panel] = "02_panel", [TipoVista.Catalogo] = "03_catalogo", [TipoVista.Clientes] = "04_clientes", [TipoVista.Carrito] = "05_carrito",
-                [TipoVista.Pedidos] = "06_pedidos", [TipoVista.Cobro] = "07_cobro", [TipoVista.Despacho] = "08_despacho",
-                [TipoVista.Devoluciones] = "09_devoluciones", [TipoVista.Inventario] = "10_inventario", [TipoVista.Reportes] = "11_reportes", [TipoVista.Auditoria] = "12_auditoria"
+                [TipoVista.Panel] = "02_panel",
+                [TipoVista.Catalogo] = "03_catalogo",
+                [TipoVista.Clientes] = "04_clientes",
+                [TipoVista.Carrito] = "05_carrito",
+                [TipoVista.Pedidos] = "06_pedidos",
+                [TipoVista.Cobro] = "07_cobro",
+                [TipoVista.Despacho] = "08_despacho",
+                [TipoVista.Devoluciones] = "09_devoluciones",
+                [TipoVista.Inventario] = "10_inventario",
+                [TipoVista.Reportes] = "11_reportes",
+                [TipoVista.Auditoria] = "12_auditoria"
             };
             foreach (var vista in principal.Vistas)
             {

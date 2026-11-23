@@ -1,7 +1,7 @@
-using LogiMarket.Application.Demo;
 using LogiMarket.Application.Comandos;
 using LogiMarket.Application.Consultas;
 using LogiMarket.Application.Coordinacion;
+using LogiMarket.Application.Demo;
 using LogiMarket.Application.Seguridad;
 using LogiMarket.Application.Servicios;
 using LogiMarket.WinForms.Infraestructura;

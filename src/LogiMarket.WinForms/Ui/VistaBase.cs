@@ -34,8 +34,15 @@ internal abstract class VistaBase : UserControl, IVistaActualizable
 
     protected Button Boton(string texto, Func<Task> accion, Permiso? permiso = null, string? accesible = null)
     {
-        var boton = new Button { Text = texto, AutoSize = true, AutoSizeMode = AutoSizeMode.GrowAndShrink, Margin = new Padding(0, 3, 8, 3),
-            AccessibleName = accesible ?? texto.Replace("&", ""), Padding = new Padding(8, 2, 8, 2) };
+        var boton = new Button
+        {
+            Text = texto,
+            AutoSize = true,
+            AutoSizeMode = AutoSizeMode.GrowAndShrink,
+            Margin = new Padding(0, 3, 8, 3),
+            AccessibleName = accesible ?? texto.Replace("&", ""),
+            Padding = new Padding(8, 2, 8, 2)
+        };
         boton.Click += async (_, _) => await Seguro(accion);
         if (permiso is { } p && !App.Tiene(p))
         {

@@ -10,3 +10,6 @@ insert_final_newline = true
 [*.cs]
 csharp_style_namespace_declarations = file_scoped:warning
 dotnet_sort_system_directives_first = true
+
+[**/Migraciones/*.cs]
+generated_code = true

@@ -21,23 +21,40 @@ internal static class Ui
 {
     public static Label Etiqueta(string texto, bool negrita = false) => new()
     {
-        Text = texto, AutoSize = true, Anchor = AnchorStyles.Left, Margin = new Padding(0, 6, 6, 0),
-        Font = negrita ? Estilo.Negrita : Estilo.Fuente, UseMnemonic = true
+        Text = texto,
+        AutoSize = true,
+        Anchor = AnchorStyles.Left,
+        Margin = new Padding(0, 6, 6, 0),
+        Font = negrita ? Estilo.Negrita : Estilo.Fuente,
+        UseMnemonic = true
     };
 
     public static Label Titulo(string texto) => new()
     {
-        Text = texto, AutoSize = true, Font = Estilo.Titulo, ForeColor = Estilo.Principal, Margin = new Padding(0, 0, 0, 4)
+        Text = texto,
+        AutoSize = true,
+        Font = Estilo.Titulo,
+        ForeColor = Estilo.Principal,
+        Margin = new Padding(0, 0, 0, 4)
     };
 
     public static Label Mensaje(string accesible) => new()
     {
-        AutoSize = false, Height = 38, Font = Estilo.Negrita, Name = accesible, AccessibleName = accesible, AccessibleRole = AccessibleRole.StaticText
+        AutoSize = false,
+        Height = 38,
+        Font = Estilo.Negrita,
+        Name = accesible,
+        AccessibleName = accesible,
+        AccessibleRole = AccessibleRole.StaticText
     };
 
     public static TextBox Caja(string accesible, int ancho = 180, bool clave = false) => new()
     {
-        Width = ancho, AccessibleName = accesible, Name = accesible, UseSystemPasswordChar = clave, Margin = new Padding(0, 3, 12, 3)
+        Width = ancho,
+        AccessibleName = accesible,
+        Name = accesible,
+        UseSystemPasswordChar = clave,
+        Margin = new Padding(0, 3, 12, 3)
     };
 
     public static ComboBox Combo(string accesible, int ancho = 180, params object[] items)
@@ -50,18 +67,35 @@ internal static class Ui
 
     public static NumericUpDown Entero(string accesible, int minimo, int maximo, int valor = 1, int ancho = 80) => new()
     {
-        Minimum = minimo, Maximum = maximo, Value = valor, Width = ancho, AccessibleName = accesible, Name = accesible, Margin = new Padding(0, 3, 12, 3)
+        Minimum = minimo,
+        Maximum = maximo,
+        Value = valor,
+        Width = ancho,
+        AccessibleName = accesible,
+        Name = accesible,
+        Margin = new Padding(0, 3, 12, 3)
     };
 
     public static NumericUpDown Decimal(string accesible, decimal minimo, decimal maximo, int decimales, decimal valor, int ancho = 100) => new()
     {
-        Minimum = minimo, Maximum = maximo, DecimalPlaces = decimales, Value = valor, Width = ancho, AccessibleName = accesible,
-        Name = accesible, Margin = new Padding(0, 3, 12, 3), ThousandsSeparator = false
+        Minimum = minimo,
+        Maximum = maximo,
+        DecimalPlaces = decimales,
+        Value = valor,
+        Width = ancho,
+        AccessibleName = accesible,
+        Name = accesible,
+        Margin = new Padding(0, 3, 12, 3),
+        ThousandsSeparator = false
     };
 
     public static CheckBox Casilla(string texto, string accesible) => new()
     {
-        Text = texto, AutoSize = true, AccessibleName = accesible, Name = accesible, Margin = new Padding(0, 6, 12, 3)
+        Text = texto,
+        AutoSize = true,
+        AccessibleName = accesible,
+        Name = accesible,
+        Margin = new Padding(0, 6, 12, 3)
     };
 
     public static FlowLayoutPanel Fila(params Control[] controles)
@@ -111,11 +145,23 @@ internal static class Ui
     {
         var g = new DataGridView
         {
-            Name = accesible, AccessibleName = accesible, Dock = DockStyle.Fill, ReadOnly = true, AllowUserToAddRows = false,
-            AllowUserToDeleteRows = false, AllowUserToResizeRows = false, MultiSelect = false, RowHeadersVisible = false,
-            AutoGenerateColumns = false, SelectionMode = DataGridViewSelectionMode.FullRowSelect, BackgroundColor = Color.White,
-            BorderStyle = BorderStyle.FixedSingle, AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill, TabStop = true,
-            EnableHeadersVisualStyles = true, ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize,
+            Name = accesible,
+            AccessibleName = accesible,
+            Dock = DockStyle.Fill,
+            ReadOnly = true,
+            AllowUserToAddRows = false,
+            AllowUserToDeleteRows = false,
+            AllowUserToResizeRows = false,
+            MultiSelect = false,
+            RowHeadersVisible = false,
+            AutoGenerateColumns = false,
+            SelectionMode = DataGridViewSelectionMode.FullRowSelect,
+            BackgroundColor = Color.White,
+            BorderStyle = BorderStyle.FixedSingle,
+            AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
+            TabStop = true,
+            EnableHeadersVisualStyles = true,
+            ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize,
             MinimumSize = new Size(200, 110)
         };
         g.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(0xF7, 0xF9, 0xFB);

@@ -79,7 +79,11 @@ public sealed class PedidoDetalle
     {
         var copia = new PedidoDetalle
         {
-            Sku = Sku, Nombre = Nombre, EsKit = EsKit, PrecioUnitario = PrecioUnitario, Cantidad = Cantidad
+            Sku = Sku,
+            Nombre = Nombre,
+            EsKit = EsKit,
+            PrecioUnitario = PrecioUnitario,
+            Cantidad = Cantidad
         };
         copia._componentes.AddRange(_componentes.Select(c => c.Copiar()));
         return copia;

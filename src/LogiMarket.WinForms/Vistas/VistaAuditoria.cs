@@ -1,6 +1,6 @@
-using LogiMarket.Application.Demo;
 using LogiMarket.Application.Consultas;
 using LogiMarket.Application.Coordinacion;
+using LogiMarket.Application.Demo;
 using LogiMarket.Application.Eventos;
 using LogiMarket.Application.Seguridad;
 using LogiMarket.Application.Servicios;
@@ -60,7 +60,10 @@ internal sealed class VistaAuditoria : VistaBase
         var aviso = new Label
         {
             Text = "MODO DEMOSTRACION: estos interruptores solo modifican a los colaboradores simulados (cobro y notificador). No alteran reglas de negocio, importes ni datos de produccion.",
-            AutoSize = false, Height = 44, ForeColor = Estilo.Error, Font = Estilo.Negrita
+            AutoSize = false,
+            Height = 44,
+            ForeColor = Estilo.Error,
+            Font = Estilo.Negrita
         };
         var pagina = new TabPage("Demostracion controlada") { Padding = new Padding(8), BackColor = Estilo.Fondo };
         pagina.Controls.Add(Ui.Ui.Pila(

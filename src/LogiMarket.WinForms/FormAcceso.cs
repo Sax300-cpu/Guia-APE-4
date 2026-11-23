@@ -35,7 +35,9 @@ internal sealed class FormAcceso : Form
         var ayuda = new Label
         {
             Text = "Cuentas de demostracion: admin, ventas, bodega y consulta.\r\nLas contrasenas de prueba estan en el README.",
-            AutoSize = true, ForeColor = Color.DimGray, Margin = new Padding(0, 14, 0, 0)
+            AutoSize = true,
+            ForeColor = Color.DimGray,
+            Margin = new Padding(0, 14, 0, 0)
         };
         var cuerpo = new FlowLayoutPanel { FlowDirection = FlowDirection.TopDown, WrapContents = false, AutoSize = true, Location = new Point(50, 30) };
         cuerpo.Controls.AddRange(new Control[]

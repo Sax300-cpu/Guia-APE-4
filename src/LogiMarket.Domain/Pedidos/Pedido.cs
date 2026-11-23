@@ -148,9 +148,17 @@ public sealed class Pedido : IPrototipo<Pedido>
             throw new DomainException("Solo se puede clonar un pedido en BORRADOR.");
         var copia = new Pedido
         {
-            Cliente = Cliente, ClienteId = ClienteId, Estado = EstadoPedido.Borrador, Entrega = Entrega,
-            TarifaEnvio = TarifaEnvio, PlazoDias = PlazoDias, Subtotal = Subtotal, Descuento = Descuento,
-            Total = Total, PoliticaDescuento = PoliticaDescuento, CreadoEn = ahora
+            Cliente = Cliente,
+            ClienteId = ClienteId,
+            Estado = EstadoPedido.Borrador,
+            Entrega = Entrega,
+            TarifaEnvio = TarifaEnvio,
+            PlazoDias = PlazoDias,
+            Subtotal = Subtotal,
+            Descuento = Descuento,
+            Total = Total,
+            PoliticaDescuento = PoliticaDescuento,
+            CreadoEn = ahora
         };
         copia._detalles.AddRange(_detalles.Select(d => d.Copiar()));
         copia._historial.Add(new HistorialEstadoPedido(null, EstadoPedido.Borrador, ahora));

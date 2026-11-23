@@ -68,8 +68,14 @@ internal sealed class FormPrincipal : Form
     {
         var menu = new FlowLayoutPanel
         {
-            Dock = DockStyle.Left, Width = 230, BackColor = Estilo.Principal, FlowDirection = FlowDirection.TopDown,
-            WrapContents = false, Padding = new Padding(10, 16, 10, 10), AccessibleName = "Menu de navegacion", AccessibleRole = AccessibleRole.MenuBar
+            Dock = DockStyle.Left,
+            Width = 230,
+            BackColor = Estilo.Principal,
+            FlowDirection = FlowDirection.TopDown,
+            WrapContents = false,
+            Padding = new Padding(10, 16, 10, 10),
+            AccessibleName = "Menu de navegacion",
+            AccessibleRole = AccessibleRole.MenuBar
         };
         menu.Controls.Add(new Label { Text = "LogiMarket 360", ForeColor = Color.White, Font = new Font("Segoe UI Semibold", 15f), AutoSize = true, Margin = new Padding(4, 0, 0, 14) });
         var numero = 1;
@@ -77,9 +83,17 @@ internal sealed class FormPrincipal : Form
         {
             var boton = new Button
             {
-                Text = $"&{numero++}  {vista.Titulo}", Width = 208, Height = 40, TextAlign = ContentAlignment.MiddleLeft,
-                FlatStyle = FlatStyle.Flat, ForeColor = Color.White, BackColor = Estilo.Principal, Margin = new Padding(0, 0, 0, 4),
-                AccessibleName = vista.Titulo, Cursor = Cursors.Hand, UseMnemonic = true
+                Text = $"&{numero++}  {vista.Titulo}",
+                Width = 208,
+                Height = 40,
+                TextAlign = ContentAlignment.MiddleLeft,
+                FlatStyle = FlatStyle.Flat,
+                ForeColor = Color.White,
+                BackColor = Estilo.Principal,
+                Margin = new Padding(0, 0, 0, 4),
+                AccessibleName = vista.Titulo,
+                Cursor = Cursors.Hand,
+                UseMnemonic = true
             };
             boton.FlatAppearance.BorderSize = 0;
             boton.FlatAppearance.MouseOverBackColor = Color.FromArgb(0x2E, 0x6D, 0xA4);
