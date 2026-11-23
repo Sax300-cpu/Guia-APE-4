@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace LogiMarket.Tests.Aplicacion;
 
-public class FlujoVentasTests
+public class FlujoVentasTests(Xunit.Abstractions.ITestOutputHelper salida)
 {
     private static async Task<(Entorno Entorno, ResultadoConfirmacion Resultado, int PedidoId)> ConfirmarAsync(
         string cliente, TipoEntrega tipo, params (string, int)[] lineas)
@@ -198,8 +198,11 @@ public class FlujoVentasTests
 
         Assert.Equal(1, resultados.Count(r => r.Exito));
         using var c = a.AbrirOtraSesion();
-        Assert.Equal(0, (await c.StockAsync())["P01"]);
-        Assert.Equal(1, (await EfectosAsync(c)).Pagos);
+        var stockFinal = (await c.StockAsync())["P01"];
+        var pagos = (await EfectosAsync(c)).Pagos;
+        salida.WriteLine($"P36: cobros aprobados={resultados.Count(r => r.Exito)} de {resultados.Length}, rechazos={string.Join(",", resultados.Where(r => !r.Exito).Select(r => r.Codigo))}, stock final P01={stockFinal}, pagos aprobados={pagos}");
+        Assert.Equal(0, stockFinal);
+        Assert.Equal(1, pagos);
     }
 
     private sealed class PasarelaQueExplota : IPasarelaPago

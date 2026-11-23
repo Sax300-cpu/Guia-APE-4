@@ -1,0 +1,17 @@
+﻿Caso P22 - salida de las pruebas (fuente: TRX)
+
+## Aplicacion.PatronesEstructuralesTests.P22_Proxy_deja_pasar_a_VENTAS_y_ADMIN(rol: "admin") -> Passed
+(sin salida)
+
+## Aplicacion.PatronesEstructuralesTests.P22_Proxy_deja_pasar_a_VENTAS_y_ADMIN(rol: "ventas") -> Passed
+(sin salida)
+
+## Aplicacion.PatronesEstructuralesTests.P22_Proxy_deniega_a_CONSULTA_y_BODEGA_antes_de_Decorator_y_proveedor(rol: "bodega") -> Passed
+P22 [bodega]: llamadas al proveedor=0, entradas de LOG=0
+
+## Aplicacion.PatronesEstructuralesTests.P22_Proxy_deniega_a_CONSULTA_y_BODEGA_antes_de_Decorator_y_proveedor(rol: "consulta") -> Passed
+P22 [consulta]: llamadas al proveedor=0, entradas de LOG=0
+
+## Aplicacion.PatronesEstructuralesTests.P22_Proxy_en_la_cadena_real_CONSULTA_no_alcanza_la_pasarela_legada_ni_deja_LOG -> Passed
+(sin salida)
+

@@ -17,7 +17,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LogiMarket.Tests.Aplicacion;
 
-public class PatronesAplicacionTests
+public class PatronesAplicacionTests(Xunit.Abstractions.ITestOutputHelper salida)
 {
     private static async Task<int> PagarAsync(Entorno e, string cliente = "Ana", string clave = "k-1")
     {
@@ -125,10 +125,14 @@ public class PatronesAplicacionTests
         Assert.Contains("no esta disponible", evento.UltimoError);
         Assert.Equal(0, await ContarAuditoriaAsync(e, "EVENTO_PedidoPagado")); // nada parcial
         Assert.Equal(0, e.Obtener<MetricasSesion>().PedidosPagados);
+        salida.WriteLine($"P37 (con fallo): procesados=0, intentos={evento.Intentos}, procesadoEn=null, ultimoError='{evento.UltimoError}'");
 
         using var reiniciada = e.AbrirOtraSesion(); // nuevo procesador, notificador ya disponible
-        Assert.Equal(1, await reiniciada.Obtener<ProcesadorOutbox>().ProcesarPendientesAsync());
-        Assert.Equal(0, await reiniciada.Obtener<ProcesadorOutbox>().ProcesarPendientesAsync());
+        var tras = await reiniciada.Obtener<ProcesadorOutbox>().ProcesarPendientesAsync();
+        var segunda = await reiniciada.Obtener<ProcesadorOutbox>().ProcesarPendientesAsync();
+        salida.WriteLine($"P37 (reinicio): procesados={tras}, segunda pasada={segunda}, pagos={await reiniciada.Obtener<LogiMarketDbContext>().Pagos.CountAsync()}");
+        Assert.Equal(1, tras);
+        Assert.Equal(0, segunda);
         Assert.Equal(1, await ContarAuditoriaAsync(reiniciada, "EVENTO_PedidoPagado"));
         Assert.Equal(1, await reiniciada.Obtener<LogiMarketDbContext>().Pagos.CountAsync()); // sin duplicar cobro
         Assert.NotNull((await reiniciada.Obtener<LogiMarketDbContext>().Outbox.SingleAsync()).ProcesadoEn);

@@ -1,0 +1,5 @@
+﻿Caso P36 - salida de las pruebas (fuente: TRX)
+
+## Aplicacion.FlujoVentasTests.P36_Dos_cobros_concurrentes_sobre_stock_1_aprueban_como_maximo_uno -> Passed
+P36: cobros aprobados=1 de 2, rechazos=VALIDACION, stock final P01=0, pagos aprobados=1
+

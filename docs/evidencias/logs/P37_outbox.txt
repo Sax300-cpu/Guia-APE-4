@@ -1,0 +1,6 @@
+﻿Caso P37 - salida de las pruebas (fuente: TRX)
+
+## Aplicacion.PatronesAplicacionTests.P37_Evento_fallido_queda_pendiente_y_se_procesa_una_vez_tras_reiniciar -> Passed
+P37 (con fallo): procesados=0, intentos=1, procesadoEn=null, ultimoError='El notificador EMAIL no esta disponible.'
+P37 (reinicio): procesados=1, segunda pasada=0, pagos=1
+
