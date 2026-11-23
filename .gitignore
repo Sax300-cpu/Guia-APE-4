@@ -14,3 +14,6 @@ appsettings.*.local.json
 *.pfx
 *.snk
 ~$*
+
+# Salida regenerable de tools/ejecutar-autoprueba.ps1
+docs/evidencias/autoprueba-ui/
