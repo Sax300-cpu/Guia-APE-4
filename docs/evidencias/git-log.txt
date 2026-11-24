@@ -1,0 +1,46 @@
+# Historial de Git de LogiMarket 360 (hasta el commit fb368be)
+# Formato: hash fecha autor asunto
+fb368be 2026-11-23 Kevin  docs: completar el README con requisitos, ejecucion, cuentas de demostracion, pruebas y reinicio seguro de la base
+147bc36 2026-11-23 Kevin  docs(evidencias): incorporar las capturas de pantalla y consola y enlazarlas en las matrices
+fd3a097 2026-11-23 Kevin  docs(matrices): documentar los diez refactores de diseno con commit, riesgo verificado y pruebas antes/despues; regenerar evidencia
+21b9e89 2026-11-23 Kevin  refactor(pruebas): unificar los helpers de escenario duplicados en Escenarios
+80baeab 2026-11-23 Kevin  refactor(dominio): mantener la regla de al menos una linea en un solo punto (Pedido.Crear) en lugar de tres capas
+0fa493c 2026-11-23 Kevin  refactor(interfaz): sustituir los estados de pedido escritos como texto por constantes derivadas del enum
+d8d1642 2026-11-23 Kevin  refactor(aplicacion): descubrir los tipos de evento del Outbox por la interfaz y probar el viaje de ida y vuelta
+7bcc5e3 2026-11-23 Kevin  refactor(aplicacion): unificar la carga de catalogo y la cadena de validacion en ValidadorPedido (duplicada en Facade y ServicioPedidos)
+8336379 2026-11-23 Kevin  refactor(aplicacion): reemplazar codigos de rechazo y mensaje de pedido inexistente literales por CodigosResultado
+dfcc269 2026-11-23 Kevin  refactor(dominio): extraer la invariante de cantidad positiva a Guardia en lugar de repetirla en seis sitios
+c2fbe6b 2026-11-23 Kevin  docs(evidencias): regenerar TRX, matrices y logs tras los refactores de la Fase 8
+7075531 2026-11-23 Kevin  docs(matrices): documentar riesgos de diseno verificados y su tratamiento
+6cb7cfb 2026-11-23 Kevin  style: ordenar importaciones con dotnet format y excluir el codigo generado de migraciones
+ed9e2e7 2026-11-23 Kevin  refactor(persistencia): derivar el filtro del indice de pago aprobado del nombre del enum
+f3456e3 2026-11-23 Kevin  refactor(aplicacion): centralizar identificadores de proveedor de cobro y canal de notificacion en constantes
+ed4e955 2026-11-23 Kevin  refactor(aplicacion): eliminar CambiarCantidad duplicado de ServicioPedidos que omitia el historial del Memento
+51d4245 2026-11-23 Kevin  docs(evidencias): generar matrices de 38 pruebas y 23 patrones desde el TRX real y logs de P19, P21, P22, P36 y P37
+cc9cdca 2026-11-22 Kevin  test(ui): agregar autoprueba por botones reales, menu por rol y script de verificacion
+3674072 2026-11-22 Kevin  feat(winforms): implementar las pantallas operativas con Mediator, validacion cercana y accesibilidad basica
+db7b5d6 2026-11-22 Kevin  feat(winforms): acceso, ventana principal con navegacion por rol y utilidades de interfaz
+63ac8f1 2026-11-22 Kevin  test(aplicacion): cubrir consultas, CRUD, plantillas, inventario y auditoria usados por la interfaz
+9b14308 2026-11-22 Kevin  feat(aplicacion): agregar consultas, CRUD de catalogo y clientes y plantillas de borrador para la interfaz
+8cba1a3 2026-11-22 Kevin  test(arquitectura): verificar dependencias, DIP, ISP y LSP (P38)
+0aeaec3 2026-11-22 Kevin  test(patrones): cubrir P25, P26, P28 y P29
+cea040e 2026-11-22 Kevin  feat(coordinacion): implementar Mediator entre vistas sin WinForms (P28)
+0329ccc 2026-11-22 Kevin  feat(pedidos): implementar Memento de edicion de borrador con deshacer/rehacer (P29)
+675a676 2026-11-22 Kevin  feat(aplicacion): implementar Interpreter de filtros de consulta (P25, P26)
+bcbdea8 2026-11-22 Kevin  test(patrones): cubrir P15-P17, P19, P21 y P22
+d0e56f8 2026-11-22 Kevin  feat(comprobantes): implementar Bridge venta/devolucion con TXT y vista previa, y Flyweight del catalogo (P17, P21)
+acb4845 2026-11-22 Kevin  feat(pagos): implementar Proxy, Decorator y Adapter en la cadena de cobro (P16, P19, P22)
+410692e 2026-11-22 Kevin  test(aplicacion): cubrir flujo de ventas, rechazos, idempotencia, concurrencia, Outbox y devoluciones (P02-P09, P20, P23, P24, P30, P33, P35-P37)
+5629b97 2026-11-22 Kevin  feat(infraestructura): repositorios de operacion, pasarela simulada y Unit of Work con traduccion de errores
+de4d5c1 2026-11-22 Kevin  feat(aplicacion): implementar Facade de confirmacion, Command, Template Method de devolucion y servicios
+ca76b26 2026-11-22 Kevin  feat(aplicacion): implementar Observer, Outbox, Factory Method y metricas Singleton (P11, P30, P37)
+8ec54ab 2026-11-22 Kevin  feat(aplicacion): implementar Abstract Factory de entrega y Chain de validacion (P12, P23)
+189c813 2026-11-22 Kevin  feat(aplicacion): agregar autorizacion por rol, sesion y puertos de operacion
+5e1e714 2026-11-21 Kevin  chore(docs): crear carpeta de capturas de evidencia
+08071bc 2026-11-21 Kevin  test(integracion): verificar creacion de base, seed, persistencia, unicidad y concurrencia (P01, P10)
+64351fb 2026-11-21 Kevin  feat(infraestructura): configurar DbContext SQLite, migracion inicial, seed idempotente y PBKDF2 (P01)
+560a91c 2026-11-21 Kevin  feat(aplicacion): definir puertos de repositorio, Unit of Work, hash y reloj
+2da6b3b 2026-11-21 Kevin  feat(dominio): agregar pagos, inventario, despacho, outbox y auditoria
+7410048 2026-11-21 Kevin  feat(dominio): implementar State, Strategy, Builder y Prototype del pedido (P13, P14, P31, P32)
+88c80eb 2026-11-21 Kevin  feat(dominio): implementar catalogo con Composite, Iterator y Visitor (P18, P27, P34)
+9799236 2026-11-21 Kevin  chore(repo): inicializar solución LogiMarket360 con cinco proyectos
