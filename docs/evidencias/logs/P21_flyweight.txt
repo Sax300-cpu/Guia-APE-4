@@ -2,5 +2,5 @@
 
 ## Aplicacion.PatronesEstructuralesTests+Flyweight.P21_Flyweight_1000_filas_comparten_metadatos_y_ocupan_menos_que_la_copia_ingenua -> Passed
 P21: filas=1000, SKU distintos=7, instancias de metadatos con Flyweight=7, sin Flyweight=1000
-P21: memoria retenida con Flyweight=51320 B, sin Flyweight=227584 B (misma carga, GC forzado)
+P21: memoria retenida con Flyweight=52184 B, sin Flyweight=227584 B (misma carga, GC forzado)
 

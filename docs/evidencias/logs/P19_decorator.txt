@@ -1,11 +1,11 @@
 ﻿Caso P19 - salida de las pruebas (fuente: TRX)
 
 ## Aplicacion.PatronesEstructuralesTests.P19_Decorator_cobro_exitoso_registra_INICIO_PASARELA_FIN_con_la_misma_correlacion -> Passed
-Secuencia P19 (exito): INICIO[0f877882] -> PASARELA[0f877882] -> FIN[0f877882]
+Secuencia P19 (exito): INICIO[e5cf156e] -> PASARELA[e5cf156e] -> FIN[e5cf156e]
 
 ## Aplicacion.PatronesEstructuralesTests.P19_Decorator_cobro_rechazado_se_registra_sin_alterar_el_resultado -> Passed
-Secuencia P19 (rechazo): INICIO[10fc7a8b] -> PASARELA[10fc7a8b] -> FIN[10fc7a8b]
+Secuencia P19 (rechazo): INICIO[0c3bbf69] -> PASARELA[0c3bbf69] -> FIN[0c3bbf69]
 
 ## Aplicacion.PatronesEstructuralesTests.P19_Decorator_un_error_del_cobro_registra_ERROR_y_propaga_la_misma_excepcion -> Passed
-Secuencia P19 (error): INICIO[9ee76a09] -> ERROR[9ee76a09]
+Secuencia P19 (error): INICIO[01ac63aa] -> ERROR[01ac63aa]
 

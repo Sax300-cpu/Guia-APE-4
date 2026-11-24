@@ -40,3 +40,8 @@ Se detectaron y repararon antes de commitear; se declara asi para no aparentar u
 | `ObservadorMetricas` y `ObservadorNotificacion` hacen `switch` por tipo de evento | Solo hay tres eventos y cada plantilla depende de su tipo; abstraerlo exige ampliar `IEventoNegocio` y seria sobrediseno |
 | `ConfirmacionPedidoFacade` recibe 10 colaboradores | Es una fachada: orquestar colaboradores es su funcion |
 | `PedidoResumenDto.Estado` es `string` | Es un DTO de presentacion; ahora sus valores salen de `EstadosPedidoTexto` (refactor 8) |
+
+## D. Hallazgo de la revision final (patron sin participacion en un caso de uso)
+
+Al auditar con `grep` donde se usa cada patron fuera de su definicion y de las pruebas, **Visitor** (`DesgloseFisicoVisitor`, `PesoLogisticoVisitor`) solo se ejecutaba en pruebas. La guia exige participacion efectiva en un caso de uso, asi que se corrigio: `ConsultasCatalogo.ListarAsync` calcula ahora el peso logistico y el desglose fisico por SKU final recorriendo cada producto o kit con ambos visitantes, y la pantalla de catalogo muestra la columna *Desglose fisico*. Commit `df68778`; suite 108 -> 108 (se ampliaron las aserciones de la prueba del catalogo), compilacion con 0 advertencias y autoprueba de la interfaz en OK.
+Los otros 22 patrones se confirmaron en flujos reales (servicios, composicion de dependencias o pantallas).
