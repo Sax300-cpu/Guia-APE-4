@@ -25,6 +25,10 @@ public class ConsultasUiTests
         var kit = filas.Single(f => f.Sku == "KIT_TELETRABAJO");
         Assert.Equal(("Kit", 60.00m, null), (kit.Tipo, kit.Precio, kit.Stock));
         Assert.Equal("KIT_OFICINA x1 + P03 x1", kit.Composicion);
+        // Visitor: el desglose por SKU final y el peso logistico salen de recorrer el kit anidado
+        Assert.Equal(("P01 x1, P02 x1, P03 x1", 1.00m), (kit.DesgloseFisico, kit.PesoKg));
+        var p01 = filas.Single(f => f.Sku == "P01");
+        Assert.Equal(("P01 x1", 0.20m), (p01.DesgloseFisico, p01.PesoKg));
         Assert.Equal(8, filas.Single(f => f.Sku == "P01").Stock);
         Assert.Equal(new[] { "P04" }, (await e.Obtener<ConsultasCatalogo>().ListarAsync("webcam")).Select(f => f.Sku));
     }

@@ -121,9 +121,15 @@ public sealed class ConsultasCatalogo(IRepositorioCatalogo catalogo, CatalogoVis
             .Select(e =>
             {
                 var fila = flyweight.CrearFila(e); // metadatos compartidos; stock y precio son datos externos de la fila
+                // Visitor: peso logistico y desglose por SKU final se calculan recorriendo producto o kit sin ampliar sus clases.
+                var peso = new PesoLogisticoVisitor();
+                var desglose = new DesgloseFisicoVisitor();
+                e.Aceptar(peso);
+                e.Aceptar(desglose);
                 return new CatalogoFilaDto(fila.Metadatos.Sku, fila.Metadatos.Nombre, fila.Metadatos.Categoria,
-                    e is KitCompuesto ? "Kit" : "Producto", fila.Precio, e is ProductoSimple ? fila.Stock : null, e.Peso,
-                    e is KitCompuesto k ? string.Join(" + ", k.Componentes.Select(c => $"{c.Hijo.Sku} x{c.Cantidad}")) : string.Empty);
+                    e is KitCompuesto ? "Kit" : "Producto", fila.Precio, e is ProductoSimple ? fila.Stock : null, peso.PesoTotalKg,
+                    e is KitCompuesto k ? string.Join(" + ", k.Componentes.Select(c => $"{c.Hijo.Sku} x{c.Cantidad}")) : string.Empty,
+                    string.Join(", ", desglose.PorSku.Select(x => $"{x.Key} x{x.Value}")));
             }).ToList();
     }
 }

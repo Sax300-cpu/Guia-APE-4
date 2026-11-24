@@ -2,7 +2,7 @@ namespace LogiMarket.Application.Consultas;
 
 public sealed record ClienteDto(int Id, string Nombre, string Email, string Categoria, bool Activo);
 
-public sealed record CatalogoFilaDto(string Sku, string Nombre, string Categoria, string Tipo, decimal Precio, int? Stock, decimal PesoKg, string Composicion);
+public sealed record CatalogoFilaDto(string Sku, string Nombre, string Categoria, string Tipo, decimal Precio, int? Stock, decimal PesoKg, string Composicion, string DesgloseFisico);
 
 public sealed record LineaPedidoDto(string Sku, string Nombre, int Cantidad, decimal PrecioUnitario, decimal Subtotal, int UnidadesFisicas);
 

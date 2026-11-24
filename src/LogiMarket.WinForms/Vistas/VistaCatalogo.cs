@@ -16,7 +16,7 @@ internal sealed class VistaCatalogo : VistaBase
         new Col("SKU", nameof(CatalogoFilaDto.Sku), 70), new Col("Nombre", nameof(CatalogoFilaDto.Nombre), 120),
         new Col("Tipo", nameof(CatalogoFilaDto.Tipo), 50), new Col("Precio (USD)", nameof(CatalogoFilaDto.Precio), 60, "0.00", true),
         new Col("Stock", nameof(CatalogoFilaDto.Stock), 40, null, true), new Col("Peso (kg)", nameof(CatalogoFilaDto.PesoKg), 50, "0.00", true),
-        new Col("Composicion", nameof(CatalogoFilaDto.Composicion), 140));
+        new Col("Composicion", nameof(CatalogoFilaDto.Composicion), 140), new Col("Desglose fisico", nameof(CatalogoFilaDto.DesgloseFisico), 150));
     private readonly TextBox _sku = Ui.Ui.Caja("SKU", 110), _nombre = Ui.Ui.Caja("Nombre", 200);
     private readonly NumericUpDown _precio = Ui.Ui.Decimal("Precio", 0.01m, 100000m, 2, 1m), _peso = Ui.Ui.Decimal("Peso en kg", 0m, 1000m, 3, 0.1m),
         _stock = Ui.Ui.Entero("Stock inicial", 0, 1000000, 0);
