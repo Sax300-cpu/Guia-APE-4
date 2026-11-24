@@ -1,7 +1,7 @@
-# Autores del repositorio (commits por autor)
-44	Kevin
+# Autores del repositorio (commits por autor, hasta el commit e11b89b)
+47	Kevin
 
-# Total de commits: 44
+# Total de commits: 47
 # Etiquetas:
 v0.1.0          Solucion LogiMarket360 con cinco proyectos
 v0.2.0          Dominio implementado
@@ -10,3 +10,4 @@ v0.4.0          Nucleo de aplicacion y transacciones
 v0.5.0          Los 23 patrones GoF y pruebas de arquitectura
 v0.6.0          Interfaz WinForms: 12 pantallas, navegacion por rol y autoprueba
 v0.7.0          Fase 8: matrices, logs, capturas y diez refactores verificados
+v1.0.0          Entrega final APE04: LogiMarket 360

@@ -1,5 +1,8 @@
-# Historial de Git de LogiMarket 360 (hasta el commit fb368be)
+# Historial de Git de LogiMarket 360 (hasta el commit e11b89b)
 # Formato: hash fecha autor asunto
+e11b89b 2026-11-24 Kevin  docs(matrices): registrar el hallazgo del Visitor y regenerar la evidencia con la suite final
+df68778 2026-11-24 Kevin  feat(catalogo): usar el Visitor en la consulta del catalogo para el peso logistico y el desglose fisico por SKU final (P34)
+90ae617 2026-11-24 Kevin  docs(evidencias): exportar el historial de Git y el resumen de autores para la entrega
 fb368be 2026-11-23 Kevin  docs: completar el README con requisitos, ejecucion, cuentas de demostracion, pruebas y reinicio seguro de la base
 147bc36 2026-11-23 Kevin  docs(evidencias): incorporar las capturas de pantalla y consola y enlazarlas en las matrices
 fd3a097 2026-11-23 Kevin  docs(matrices): documentar los diez refactores de diseno con commit, riesgo verificado y pruebas antes/despues; regenerar evidencia
